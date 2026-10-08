@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es" id="exe-page-muyqngs8-7j3sh6mb6">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="eXeLearning v4.0.5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="license" type="text/html" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<title>3. Colisiones y métodos de resolución | 2. Tabla Hash en Python</title>
+<link rel="icon" type="image/x-icon" href="../libs/favicon.ico">
+<script>document.querySelector("html").classList.add("js");</script><script src="../libs/jquery/jquery.min.js"> </script><script src="../libs/common_i18n.js"> </script><script src="../libs/common.js"> </script><script src="../libs/exe_export.js"> </script><script src="../libs/bootstrap/bootstrap.bundle.min.js"> </script><link rel="stylesheet" href="../libs/bootstrap/bootstrap.min.css">
+<script src="../idevices/text/text.js"></script><link rel="stylesheet" href="../idevices/text/text.css">
+<link rel="stylesheet" href="../content/css/base.css"><script src="../theme/style.js"> </script><link rel="stylesheet" href="../theme/style.css">
+</head>
+<body class="exe-export exe-web-site">
+<script>document.body.className+=" js"</script>
+<div class="exe-content exe-export pre-js siteNav-hidden"><a href="#page-muyqngs8-7j3sh6mb6" id="skipNav">Skip to content</a> <nav id="siteNav">
+<ul>
+<li> <a href="../index.html" class="main-node no-ch">Inicio</a>
+</li>
+<li> <a href="../html/1-fundamentos-de-las-tablas-hash.html" class="no-ch">1. Fundamentos de las tablas hash</a>
+</li>
+<li> <a href="../html/2-funciones-hash-y-distribucion-de-claves.html" class="no-ch">2. Funciones hash y distribución de claves</a>
+</li>
+<li class="active"> <a href="../html/3-colisiones-y-metodos-de-resolucion.html" class="active no-ch">3. Colisiones y métodos de resolución</a>
+</li>
+<li> <a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" class="no-ch">4. Operaciones fundamentales de una tabla hash</a>
+</li>
+<li> <a href="../html/5-implementacion-de-tablas-hash-en-python.html" class="no-ch">5. Implementación de tablas hash en Python</a>
+</li>
+<li> <a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" class="no-ch">6. Aplicaciones prácticas de las tablas hash</a>
+</li>
+<li> <a href="../html/repaso-tabla-hash-en-python.html" class="no-ch">Repaso: Tabla Hash en Python</a>
+</li>
+</ul>
+</nav><main id="page-muyqngs8-7j3sh6mb6" class="page"> 
+<header class="main-header">
+<div class="package-header"><p class="package-title">2. Tabla Hash en Python</p></div>
+<div class="page-header"><h1 class="page-title">3. Colisiones y métodos de resolución</h1></div>
+</header><div id="page-content-page-muyqngs8-7j3sh6mb6" class="page-content">
+<article id="block-muyrq31t-zaqatgihs" class="box">
+<header class="box-head no-icon">
+<h1 class="box-title">Contenido</h1>
+<button class="box-toggle box-toggle-on" title="Toggle content">
+<span>Toggle content</span>
+</button></header>
+<div class="box-content">
+<div id="idevice-1791417496814-kh9mbou0b" class="idevice_node text" data-idevice-path="../idevices/text/" data-idevice-type="text" data-idevice-component-type="json" data-idevice-json-data="{&quot;ideviceId&quot;:&quot;idevice-1791417496814-kh9mbou0b&quot;}">
+<div class="exe-text-template">
+    <div style="font-family: Arial, Helvetica, sans-serif; color: #1f2937; line-height: 1.65; max-width: 1200px; margin: 0 auto;"><!-- ENCABEZADO -->
+<div style="background: #3B82F6; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-bottom: 24px;">
+<div style="display: inline-block; background: #FBBF24; color: #1f2937; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 12px;">Estructuras de Datos en Python</div>
+<h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 29px; font-weight: 600;">Colisiones y métodos de resolución</h2>
+<p style="margin: 0; color: #ffffff; font-size: 17px;">Comprender las causas y consecuencias de las colisiones, implementar mecanismos de resolución y comparar su impacto en el rendimiento de las tablas hash.</p>
+</div>
+<!-- INTRODUCCIÓN -->
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-left: 6px solid #10B981; padding: 20px 24px; border-radius: 8px; margin-bottom: 30px;">
+<h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 22px;">Introducción</h3>
+<p style="margin: 0 0 12px 0;">Las tablas hash permiten almacenar y recuperar información de manera eficiente mediante funciones hash que transforman claves en índices de almacenamiento. Sin embargo, cuando diferentes claves generan el mismo índice, se produce una situación conocida como <strong>colisión (collision)</strong>.</p>
+<p style="margin: 0 0 12px 0;">Las colisiones constituyen uno de los principales desafíos en la implementación de tablas hash, debido a que pueden afectar el rendimiento de las operaciones de inserción, búsqueda y eliminación.</p>
+<p style="margin: 0 0 12px 0;">Para solucionar este problema, existen mecanismos que permiten almacenar varios elementos sin perder información. Entre los más utilizados se encuentran el <strong>encadenamiento separado (Separate Chaining)</strong> y el <strong>direccionamiento abierto (Open Addressing)</strong>.</p>
+<p style="margin: 0;">Comprender estos mecanismos permite diseñar tablas hash capaces de administrar múltiples registros, mantener la integridad de los datos y aprovechar eficientemente el espacio de almacenamiento.</p>
+</div>
+<!-- 3.1 CONCEPTO DE COLISIÓN -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">3.1 Concepto de colisión en una tabla hash</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">Una <strong>colisión</strong> ocurre cuando dos o más claves diferentes producen el mismo índice después de aplicar una función hash.</p>
+</div>
+<p>Esta situación puede presentarse incluso cuando la función hash está correctamente diseñada, debido a que la cantidad de claves posibles generalmente es mayor que la cantidad de posiciones disponibles.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Ejemplo conceptual</h4>
+<p>Consideremos una tabla hash con diez posiciones y la siguiente función:</p>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px; text-align: center; margin: 18px 0;"><strong style="color: #1d4ed8; font-size: 25px;">h(k) = k mod 10</strong></div>
+<p>Se desean almacenar las claves <code>15</code>, <code>25</code> y <code>35</code>.</p>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 450px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB;">Clave</th>
+<th style="padding: 13px; border: 1px solid #2563EB;">Operación</th>
+<th style="padding: 13px; border: 1px solid #2563EB;">Índice</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">15</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">15 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">25</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">25 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">35</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">35 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px; margin: 22px 0;">
+<h4 style="color: #1f2937; margin: 0 0 16px 0;">Representación de una colisión</h4>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 16px 24px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">Clave 15</strong>
+<div style="font-size: 14px;">Índice 5</div>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 16px 24px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">Clave 25</strong>
+<div style="font-size: 14px;">Índice 5</div>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 16px 24px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">Clave 35</strong>
+<div style="font-size: 14px;">Índice 5</div>
+</div>
+</div>
+<div style="font-size: 30px; color: #d97706; text-align: center; margin: 10px 0;">↓</div>
+<div style="max-width: 400px; margin: 0 auto; background: #FEF3C7; border: 2px solid #F59E0B; padding: 20px; border-radius: 9px; text-align: center;"><strong style="font-size: 22px; color: #92400e;">Posición 5</strong>
+<p style="margin: 8px 0 0 0; color: #92400e;">Tres claves necesitan una misma posición.</p>
+</div>
+<p style="text-align: center; color: #b45309; font-weight: bold; margin-bottom: 0;">¡Colisión detectada!</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Ejemplo en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>def funcion_hash(clave, capacidad):
+    return clave % capacidad
+
+
+capacidad = 10
+claves = [15, 25, 35]
+
+for clave in claves:
+    indice = funcion_hash(clave, capacidad)
+    print(f&quot;Clave {clave}: índice {indice}&quot;)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>Clave 15: índice 5
+Clave 25: índice 5
+Clave 35: índice 5</code></pre>
+</div>
+<p style="margin-top: 18px;">Una implementación correcta debe permitir conservar todos los elementos y diferenciarlos utilizando sus claves originales.</p>
+</section>
+<!-- 3.2 CAUSAS Y CONSECUENCIAS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">3.2 Causas y consecuencias de las colisiones</h3>
+<p>Las colisiones pueden producirse por diferentes factores relacionados con la función hash, la capacidad de almacenamiento y las características de las claves.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Causas principales</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 22px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Capacidad limitada</strong>
+<p style="margin: 8px 0 0 0;">La tabla dispone de un número finito de posiciones para almacenar claves.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Distribución deficiente</strong>
+<p style="margin: 8px 0 0 0;">Una función hash puede concentrar numerosas claves en determinadas posiciones.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Claves con patrones similares</strong>
+<p style="margin: 8px 0 0 0;">Algunas funciones generan coincidencias cuando las claves comparten características.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Factor de carga elevado</strong>
+<p style="margin: 8px 0 0 0;">Una mayor cantidad de elementos incrementa las posibilidades de colisiones.</p>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Consecuencias de las colisiones</h4>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 20px 24px; border-radius: 9px; margin: 20px 0;">
+<ul style="margin: 0; padding-left: 24px;">
+<li style="margin-bottom: 10px;"><strong>Mayor tiempo de búsqueda:</strong> se necesitan operaciones adicionales para identificar una clave.</li>
+<li style="margin-bottom: 10px;"><strong>Inserciones más complejas:</strong> debe encontrarse una manera de almacenar los elementos que coinciden.</li>
+<li style="margin-bottom: 10px;"><strong>Degradación del rendimiento:</strong> una concentración excesiva incrementa el tiempo de ejecución.</li>
+<li style="margin-bottom: 10px;"><strong>Mayor uso de recursos:</strong> algunos métodos necesitan estructuras adicionales.</li>
+<li><strong>Riesgo de pérdida de información:</strong> una implementación incorrecta puede sobrescribir registros existentes.</li>
+</ul>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Ejemplo de una implementación incorrecta</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>tabla = [None] * 10
+
+claves = [15, 25, 35]
+
+for clave in claves:
+    indice = clave % 10
+    tabla[indice] = clave
+
+print(tabla[5])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>35</code></pre>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px 24px; border-radius: 9px; margin-top: 20px;"><strong style="color: #92400e;">Problema identificado</strong>
+<p style="margin: 8px 0 0 0;">Cada nueva inserción reemplaza el valor anterior. Solamente permanece la última clave almacenada. Una tabla hash correcta no debe sobrescribir registros diferentes únicamente porque generan el mismo índice.</p>
+</div>
+</section>
+<!-- 3.3 ENCADENAMIENTO -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">3.3 Resolución mediante encadenamiento separado</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">El <strong>encadenamiento separado (Separate Chaining)</strong> permite almacenar varios elementos asociados con una misma posición de la tabla mediante una colección adicional.</p>
+</div>
+<p>En lugar de reservar una única entrada por índice, cada posición contiene una estructura capaz de almacenar múltiples registros. Pueden utilizarse listas enlazadas, listas dinámicas u otras estructuras.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Funcionamiento</h4>
+<ol style="padding-left: 24px;">
+<li style="margin-bottom: 9px;">Se calcula el índice mediante la función hash.</li>
+<li style="margin-bottom: 9px;">Se localiza la posición correspondiente.</li>
+<li style="margin-bottom: 9px;">Si la posición está vacía, se agrega el primer elemento.</li>
+<li style="margin-bottom: 9px;">Si ya contiene elementos, el nuevo registro se incorpora a la colección asociada.</li>
+<li>Para realizar una búsqueda, se revisan las claves almacenadas en dicha posición.</li>
+</ol>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px; margin: 22px 0;">
+<h4 style="color: #1f2937; margin: 0 0 16px 0;">Representación del encadenamiento</h4>
+<div style="max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 65px;">Índice 3</strong>
+<div style="background: #FFFFFF; border: 1px solid #D1D5DB; padding: 10px 16px; flex: 1; border-radius: 5px;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 65px;">Índice 4</strong>
+<div style="background: #FFFFFF; border: 1px solid #D1D5DB; padding: 10px 16px; flex: 1; border-radius: 5px;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 65px; color: #047857;">Índice 5</strong>
+<div style="background: #D1FAE5; border: 2px solid #10B981; padding: 10px 16px; flex: 1; border-radius: 5px; font-weight: bold; text-align: center; color: #065f46;">15 → 25 → 35</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 65px;">Índice 6</strong>
+<div style="background: #FFFFFF; border: 1px solid #D1D5DB; padding: 10px 16px; flex: 1; border-radius: 5px;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 65px;">Índice 7</strong>
+<div style="background: #FFFFFF; border: 1px solid #D1D5DB; padding: 10px 16px; flex: 1; border-radius: 5px;">Vacío</div>
+</div>
+</div>
+<p style="text-align: center; margin: 16px 0 0 0; color: #4b5563; font-size: 14px;">Las tres claves comparten el índice 5, pero se conservan en una colección asociada a esa posición.</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Implementación con listas en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>capacidad = 10
+
+tabla = [[] for _ in range(capacidad)]
+
+
+def insertar(clave):
+    indice = clave % capacidad
+
+    if clave not in tabla[indice]:
+        tabla[indice].append(clave)
+
+
+insertar(15)
+insertar(25)
+insertar(35)
+
+print(tabla[5])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>[15, 25, 35]</code></pre>
+</div>
+<p style="margin-top: 18px;">Cada posición contiene una lista que permite almacenar varias claves. Cuando se genera una colisión, los elementos se conservan dentro de la misma colección.</p>
+<h4 style="color: #3b82f6; font-size: 20px; margin-top: 26px;">Búsqueda mediante encadenamiento</h4>
+<p>Continuando con la tabla creada anteriormente:</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>def buscar(clave):
+    indice = clave % capacidad
+    return clave in tabla[indice]
+
+
+print(buscar(25))
+print(buscar(45))</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>True
+False</code></pre>
+</div>
+<p style="margin-top: 18px;">La función calcula el índice y después busca la clave dentro de la lista correspondiente.</p>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 26px;">Ventajas y limitaciones</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Ventajas</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Limitaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Implementación relativamente sencilla.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Requiere estructuras adicionales.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Permite almacenar varias claves por posición.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Las cadenas largas incrementan el tiempo de búsqueda.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Admite factores de carga mayores que 1.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Puede utilizar más memoria por elemento.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Facilita la eliminación de elementos.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende de una distribución adecuada.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 3.4 DIRECCIONAMIENTO ABIERTO -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">3.4 Resolución mediante direccionamiento abierto</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">El <strong>direccionamiento abierto (Open Addressing)</strong> resuelve las colisiones buscando otra posición disponible dentro de la misma tabla.</p>
+</div>
+<p>A diferencia del encadenamiento separado, todos los elementos se almacenan directamente en las posiciones de la tabla. Cuando una posición está ocupada, se aplica una secuencia de exploración para localizar otro espacio.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Funcionamiento general</h4>
+<ol style="padding-left: 24px;">
+<li style="margin-bottom: 8px;">Se calcula el índice inicial mediante la función hash.</li>
+<li style="margin-bottom: 8px;">Se verifica si la posición está disponible.</li>
+<li style="margin-bottom: 8px;">Si está ocupada, se calcula una nueva posición.</li>
+<li style="margin-bottom: 8px;">El procedimiento continúa hasta encontrar un espacio libre.</li>
+<li>El elemento se almacena en la posición seleccionada.</li>
+</ol>
+<!-- EXPLORACIÓN LINEAL -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 24px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 21px;">A. Exploración lineal (Linear Probing)</h4>
+<p>La exploración lineal busca posiciones consecutivas cuando ocurre una colisión.</p>
+<div style="background: #EFF6FF; padding: 16px; border-radius: 8px; text-align: center; margin: 18px 0;"><strong style="font-size: 22px; color: #1d4ed8;">h(k, i) = (h(k) + i) mod m</strong></div>
+<ul style="padding-left: 24px;">
+<li><strong>h(k):</strong> índice inicial.</li>
+<li><strong>i:</strong> número de intento.</li>
+<li><strong>m:</strong> capacidad de la tabla.</li>
+</ul>
+<p>Si las claves <code>15</code>, <code>25</code> y <code>35</code> producen el índice inicial 5, pueden distribuirse consecutivamente.</p>
+<div style="overflow-x: auto; margin: 18px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 440px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 12px; border: 1px solid #2563EB;">Clave</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Índice inicial</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Índice final</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">15</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">25</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">6</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">35</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; margin: 20px 0;">
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>0</small>
+<div>—</div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>1</small>
+<div>—</div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>2</small>
+<div>—</div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>3</small>
+<div>—</div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>4</small>
+<div>—</div>
+</div>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>5</small>
+<div><strong>15</strong></div>
+</div>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>6</small>
+<div><strong>25</strong></div>
+</div>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>7</small>
+<div><strong>35</strong></div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>8</small>
+<div>—</div>
+</div>
+<div style="background: #F3F4F6; border: 1px solid #D1D5DB; padding: 12px 4px; text-align: center; border-radius: 6px;"><small>9</small>
+<div>—</div>
+</div>
+</div>
+<h4 style="color: #3b82f6;">Implementación en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; overflow: auto; padding: 22px;"><code>capacidad = 10
+tabla = [None] * capacidad
+
+
+def insertar(clave):
+    indice = clave % capacidad
+
+    for _ in range(capacidad):
+        if tabla[indice] is None:
+            tabla[indice] = clave
+            return True
+
+        if tabla[indice] == clave:
+            return False
+
+        indice = (indice + 1) % capacidad
+
+    return False
+
+
+insertar(15)
+insertar(25)
+insertar(35)
+
+print(tabla)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>[None, None, None, None, None, 15, 25, 35, None, None]</code></pre>
+</div>
+<p style="margin-bottom: 0;">La operación <code>(indice + 1) % capacidad</code> permite continuar la exploración desde el inicio cuando se alcanza la última posición.</p>
+</div>
+<!-- EXPLORACIÓN CUADRÁTICA -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 24px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 21px;">B. Exploración cuadrática (Quadratic Probing)</h4>
+<p>Utiliza desplazamientos basados en el cuadrado del número de intento para buscar posiciones alternativas.</p>
+<div style="background: #ECFDF5; padding: 16px; border-radius: 8px; text-align: center; margin: 18px 0;"><strong style="font-size: 22px; color: #047857;">h(k, i) = (h(k) + i²) mod m</strong></div>
+<p>Si el índice inicial es 5 y la capacidad de la tabla es 11, se obtiene:</p>
+<div style="overflow-x: auto; margin: 18px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 480px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 12px; border: 1px solid #2563EB;">Intento</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Operación</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Índice</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">0</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">(5 + 0²) % 11</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">1</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">(5 + 1²) % 11</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">6</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">2</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">(5 + 2²) % 11</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">9</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">3</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">(5 + 3²) % 11</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; overflow: auto; padding: 22px;"><code>def exploracion_cuadratica(clave, capacidad):
+    indice_inicial = clave % capacidad
+
+    for intento in range(capacidad):
+        indice = (
+            indice_inicial + intento ** 2
+        ) % capacidad
+
+        print(indice)
+
+
+exploracion_cuadratica(16, 11)</code></pre>
+<p style="margin-bottom: 0;">Esta técnica reduce la agrupación primaria que puede presentarse en la exploración lineal. Sin embargo, determinadas configuraciones pueden repetir posiciones sin recorrer toda la tabla.</p>
+</div>
+<!-- DOBLE HASH -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #FBBF24; border-radius: 9px; padding: 22px 24px; margin: 24px 0;">
+<h4 style="color: #92400e; margin: 0 0 12px 0; font-size: 21px;">C. Doble hashing (Double Hashing)</h4>
+<p>Utiliza una segunda función hash para determinar el desplazamiento entre las posiciones exploradas.</p>
+<div style="background: #FFFBEB; padding: 16px; border-radius: 8px; text-align: center; margin: 18px 0;"><strong style="font-size: 21px; color: #92400e;">h(k, i) = (h₁(k) + i × h₂(k)) mod m</strong></div>
+<ul style="padding-left: 24px;">
+<li><strong>h₁(k):</strong> índice inicial.</li>
+<li><strong>h₂(k):</strong> desplazamiento calculado.</li>
+<li><strong>i:</strong> número de intento.</li>
+<li><strong>m:</strong> capacidad de la tabla.</li>
+</ul>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; overflow: auto; padding: 22px;"><code>def doble_hash(clave, capacidad):
+    h1 = clave % capacidad
+    h2 = 1 + (clave % (capacidad - 1))
+
+    for intento in range(capacidad):
+        indice = (
+            h1 + intento * h2
+        ) % capacidad
+
+        print(indice)
+
+
+doble_hash(25, 11)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>3
+9
+4
+10
+5
+0
+6
+1
+7
+2
+8</code></pre>
+</div>
+<p style="margin-bottom: 0;">Para recorrer todas las posiciones, el desplazamiento debe ser coprimo con la capacidad. En el ejemplo se utiliza una capacidad prima de 11 y un desplazamiento comprendido entre 1 y 10.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Comparación de técnicas</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 650px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Técnica</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Funcionamiento</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Consideración</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Lineal</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Revisa posiciones consecutivas.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Puede producir agrupación primaria.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Cuadrática</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Utiliza desplazamientos cuadráticos.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Puede no visitar todas las posiciones.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Doble hashing</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Utiliza una segunda función hash.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Requiere diseñar adecuadamente ambas funciones.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #FFFBEB; border-left: 5px solid #FBBF24; padding: 18px 22px; border-radius: 8px;">
+<p style="margin: 0;"><strong>Consideración:</strong> en direccionamiento abierto, la eliminación puede requerir marcadores especiales para conservar la continuidad de las búsquedas y evitar que se pierdan registros durante la exploración.</p>
+</div>
+</section>
+<!-- 3.5 COMPARACIÓN Y RENDIMIENTO -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">3.5 Comparación de métodos y su impacto en el rendimiento</h3>
+<p>La selección del mecanismo de resolución de colisiones influye directamente en el uso de memoria, la velocidad de las operaciones y la complejidad de implementación de una tabla hash.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Encadenamiento separado frente a direccionamiento abierto</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 750px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Criterio</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Encadenamiento separado</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Direccionamiento abierto</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Almacenamiento</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Colecciones asociadas a cada índice.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Posiciones dentro de la tabla.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Colisiones</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Agrega elementos a una cadena.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Busca otra posición disponible.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Memoria adicional</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Generalmente mayor.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Generalmente menor.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Factor de carga</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Puede superar 1.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">No puede superar 1.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Eliminación</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Relativamente sencilla.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Debe preservar las búsquedas.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Rendimiento</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende de la longitud de las cadenas.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende del factor de carga y exploración.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Implementación</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Fácil de comprender y extender.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Requiere mayor control de posiciones.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Complejidad temporal</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 500px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB;">Operación</th>
+<th style="padding: 13px; border: 1px solid #2563EB;">Caso promedio</th>
+<th style="padding: 13px; border: 1px solid #2563EB;">Peor caso</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">Inserción</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">O(n)</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">Búsqueda</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">O(n)</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">Eliminación</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">O(n)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El rendimiento promedio depende de una distribución adecuada de claves, del factor de carga y del mecanismo de resolución empleado.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 16px; margin: 22px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Encadenamiento separado</strong>
+<p style="margin: 8px 0 0 0;">Las cadenas extensas incrementan el número de comparaciones durante las búsquedas.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Direccionamiento abierto</strong>
+<p style="margin: 8px 0 0 0;">Un factor de carga elevado puede aumentar las posiciones exploradas durante cada operación.</p>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Criterios para seleccionar un método</h4>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 20px 24px; border-radius: 9px;">
+<ul style="margin: 0; padding-left: 24px;">
+<li style="margin-bottom: 9px;"><strong>Cantidad de elementos:</strong> volumen de información que administrará la tabla.</li>
+<li style="margin-bottom: 9px;"><strong>Disponibilidad de memoria:</strong> recursos necesarios para almacenar registros y estructuras adicionales.</li>
+<li style="margin-bottom: 9px;"><strong>Frecuencia de operaciones:</strong> cantidad de inserciones, búsquedas y eliminaciones.</li>
+<li style="margin-bottom: 9px;"><strong>Factor de carga esperado:</strong> crecimiento previsto de la estructura.</li>
+<li><strong>Simplicidad de implementación:</strong> complejidad del control de posiciones y colisiones.</li>
+</ul>
+</div>
+</section>
+<!-- EJEMPLO INTEGRADOR -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">Ejemplo integrador en Python</h3>
+<p>El siguiente programa implementa una tabla hash sencilla con encadenamiento separado para administrar productos mediante claves numéricas.</p>
+<p>Cada entrada almacena un par clave-valor y permite resolver colisiones sin sobrescribir la información de otros registros.</p>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 22px 24px; border-radius: 9px; margin: 22px 0;">
+<h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 20px;">Tabla hash mediante una clase</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class TablaHash:
+    def __init__(self, capacidad):
+        self.capacidad = capacidad
+        self.tabla = [
+            [] for _ in range(capacidad)
+        ]
+
+    def hash(self, clave):
+        return clave % self.capacidad
+
+    def insertar(self, clave, valor):
+        indice = self.hash(clave)
+
+        for elemento in self.tabla[indice]:
+            if elemento[0] == clave:
+                elemento[1] = valor
+                return
+
+        self.tabla[indice].append(
+            [clave, valor]
+        )
+
+    def buscar(self, clave):
+        indice = self.hash(clave)
+
+        for elemento in self.tabla[indice]:
+            if elemento[0] == clave:
+                return elemento[1]
+
+        return None
+
+    def mostrar(self):
+        for indice, elementos in enumerate(self.tabla):
+            print(f&quot;{indice}: {elementos}&quot;)
+
+
+# Crear tabla hash
+productos = TablaHash(10)
+
+# Insertar registros
+productos.insertar(15, &quot;Teclado&quot;)
+productos.insertar(25, &quot;Mouse&quot;)
+productos.insertar(35, &quot;Monitor&quot;)
+productos.insertar(12, &quot;Impresora&quot;)
+
+# Mostrar distribución
+productos.mostrar()
+
+# Buscar un producto
+print(&quot;Búsqueda:&quot;, productos.buscar(25))</code></pre>
+<h4 style="color: #047857; margin: 20px 0 12px 0;">Resultado de la ejecución</h4>
+<pre style="background: #ECFDF5; color: #065f46; border: 1px solid #A7F3D0; padding: 18px 20px; border-radius: 8px; overflow: auto; font-family: Consolas, Monaco, monospace; font-size: 14px;"><code>0: []
+1: []
+2: [[12, &#039;Impresora&#039;]]
+3: []
+4: []
+5: [[15, &#039;Teclado&#039;], [25, &#039;Mouse&#039;], [35, &#039;Monitor&#039;]]
+6: []
+7: []
+8: []
+9: []
+Búsqueda: Mouse</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin-top: 20px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Estructura</strong>
+<p style="margin: 8px 0 0 0;">La clase crea una lista de colecciones para almacenar los elementos.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Función hash</strong>
+<p style="margin: 8px 0 0 0;">El método <code>hash()</code> calcula el índice mediante el operador módulo.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Inserción</strong>
+<p style="margin: 8px 0 0 0;">El método <code>insertar()</code> agrega registros y actualiza valores cuando la clave ya existe.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Búsqueda</strong>
+<p style="margin: 8px 0 0 0;">El método <code>buscar()</code> localiza la colección y compara las claves almacenadas.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Visualización</strong>
+<p style="margin: 8px 0 0 0;">El método <code>mostrar()</code> presenta la distribución de los elementos.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Resolución de colisiones</strong>
+<p style="margin: 8px 0 0 0;">Las claves 15, 25 y 35 comparten el índice 5 sin sobrescribirse.</p>
+</div>
+</div>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 18px 22px; border-radius: 8px; margin-top: 22px;">
+<p style="margin: 0;"><strong>Aplicación práctica:</strong> el encadenamiento separado permite conservar múltiples registros cuyas claves generan el mismo índice, manteniendo las operaciones de almacenamiento y búsqueda dentro de una estructura organizada.</p>
+</div>
+</section>
+<!-- SÍNTESIS -->
+<div style="background: #1F2937; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-top: 30px;">
+<h3 style="margin: 0 0 12px 0; color: #fbbf24; font-size: 22px;">Síntesis</h3>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Las colisiones ocurren cuando diferentes claves generan el mismo índice dentro de una tabla hash. Aunque la función esté correctamente diseñada, estas situaciones pueden presentarse debido a la cantidad limitada de posiciones disponibles.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">El encadenamiento separado permite almacenar varios registros asociados a un mismo índice mediante listas u otras estructuras. El direccionamiento abierto busca posiciones alternativas mediante exploración lineal, cuadrática o doble hashing.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Cada método presenta ventajas y limitaciones relacionadas con el consumo de memoria, el factor de carga y el rendimiento de las operaciones.</p>
+<p style="margin: 0; color: #ffffff;">La selección de un mecanismo adecuado permite mantener la integridad de los registros y conservar un acceso eficiente a la información. Estos fundamentos son esenciales para implementar las operaciones de inserción, búsqueda, actualización y eliminación de una tabla hash.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div></main><div class="nav-buttons">
+<a href="../html/2-funciones-hash-y-distribucion-de-claves.html" title="Anterior" class="nav-button nav-button-left"><span>Anterior</span></a>
+<a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" title="Siguiente" class="nav-button nav-button-right"><span>Siguiente</span></a>
+</div>
+<footer id="siteFooter"><div id="siteFooterContent"> <div id="packageLicense" class="cc cc-by-sa"> <p> <span class="license-label">Licencia: </span><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Reconocimiento - compartir igual 4.0</a></p>
+</div>
+</div></footer>
+</div>
+<p id="made-with-eXe"> <a href="https://exelearning.net/" target="_blank" rel="noopener"> <span>Creado con eXeLearning <span>(Ventana nueva)</span></span></a></p>
+</body>
+</html>

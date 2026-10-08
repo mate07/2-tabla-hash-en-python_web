@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es" id="exe-page-muyqo9um-bo6qi5gmj">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="eXeLearning v4.0.5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="license" type="text/html" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<title>Repaso: Tabla Hash en Python | 2. Tabla Hash en Python</title>
+<link rel="icon" type="image/x-icon" href="../libs/favicon.ico">
+<script>document.querySelector("html").classList.add("js");</script><script src="../libs/jquery/jquery.min.js"> </script><script src="../libs/common_i18n.js"> </script><script src="../libs/common.js"> </script><script src="../libs/exe_export.js"> </script><script src="../libs/bootstrap/bootstrap.bundle.min.js"> </script><link rel="stylesheet" href="../libs/bootstrap/bootstrap.min.css">
+<script src="../idevices/text/text.js"></script><link rel="stylesheet" href="../idevices/text/text.css">
+<link rel="stylesheet" href="../content/css/base.css"><script src="../theme/style.js"> </script><link rel="stylesheet" href="../theme/style.css">
+</head>
+<body class="exe-export exe-web-site">
+<script>document.body.className+=" js"</script>
+<div class="exe-content exe-export pre-js siteNav-hidden"><a href="#page-muyqo9um-bo6qi5gmj" id="skipNav">Skip to content</a> <nav id="siteNav">
+<ul>
+<li> <a href="../index.html" class="main-node no-ch">Inicio</a>
+</li>
+<li> <a href="../html/1-fundamentos-de-las-tablas-hash.html" class="no-ch">1. Fundamentos de las tablas hash</a>
+</li>
+<li> <a href="../html/2-funciones-hash-y-distribucion-de-claves.html" class="no-ch">2. Funciones hash y distribución de claves</a>
+</li>
+<li> <a href="../html/3-colisiones-y-metodos-de-resolucion.html" class="no-ch">3. Colisiones y métodos de resolución</a>
+</li>
+<li> <a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" class="no-ch">4. Operaciones fundamentales de una tabla hash</a>
+</li>
+<li> <a href="../html/5-implementacion-de-tablas-hash-en-python.html" class="no-ch">5. Implementación de tablas hash en Python</a>
+</li>
+<li> <a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" class="no-ch">6. Aplicaciones prácticas de las tablas hash</a>
+</li>
+<li class="active"> <a href="../html/repaso-tabla-hash-en-python.html" class="active no-ch">Repaso: Tabla Hash en Python</a>
+</li>
+</ul>
+</nav><main id="page-muyqo9um-bo6qi5gmj" class="page"> 
+<header class="main-header">
+<div class="package-header"><p class="package-title">2. Tabla Hash en Python</p></div>
+<div class="page-header"><h1 class="page-title">Repaso: Tabla Hash en Python</h1></div>
+</header><div id="page-content-page-muyqo9um-bo6qi5gmj" class="page-content">
+<article id="block-muyt72aa-lqaenjujg" class="box">
+<header class="box-head no-icon">
+<h1 class="box-title">Repaso</h1>
+<button class="box-toggle box-toggle-on" title="Toggle content">
+<span>Toggle content</span>
+</button></header>
+<div class="box-content">
+<div id="idevice-1791419968592-rtgts4enk" class="idevice_node text" data-idevice-path="../idevices/text/" data-idevice-type="text" data-idevice-component-type="json" data-idevice-json-data="{&quot;ideviceId&quot;:&quot;idevice-1791419968592-rtgts4enk&quot;}">
+<div class="exe-text-template">
+    <style>
+#hash-relaciona *{box-sizing:border-box}
+#hash-relaciona .hr-header{background:#3B82F6;color:#fff;padding:26px;border-radius:10px;margin-bottom:20px}
+#hash-relaciona .hr-header h2{margin:8px 0;color:#fff;font-size:27px}
+#hash-relaciona .hr-label{display:inline-block;background:#FBBF24;color:#1F2937;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:bold}
+#hash-relaciona .hr-intro{background:#EFF6FF;border-left:5px solid #3B82F6;padding:17px 20px;border-radius:7px;margin-bottom:20px}
+#hash-relaciona .hr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+#hash-relaciona .hr-stat{background:#F9FAFB;border:1px solid #E5E7EB;padding:14px 10px;text-align:center;border-radius:9px}
+#hash-relaciona .hr-stat strong{display:block;font-size:24px;color:#2563EB}
+#hash-relaciona .hr-stat span{font-size:13px;color:#4B5563}
+#hash-relaciona .hr-progress{height:11px;background:#E5E7EB;border-radius:10px;overflow:hidden;margin-bottom:20px}
+#hash-relaciona .hr-progress-bar{height:100%;background:#10B981;width:0;transition:width .25s}
+#hash-relaciona .hr-item{background:#fff;border:1px solid #E5E7EB;border-left:5px solid #3B82F6;border-radius:9px;margin-bottom:12px;padding:17px}
+#hash-relaciona .hr-item.hr-correct{border-left-color:#10B981;background:#ECFDF5}
+#hash-relaciona .hr-item.hr-wrong{border-left-color:#EF4444;background:#FEF2F2}
+#hash-relaciona .hr-number{display:inline-block;background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:3px 9px;font-size:12px;font-weight:bold;margin-bottom:7px}
+#hash-relaciona .hr-concept{font-weight:bold;font-size:16px;margin-bottom:9px}
+#hash-relaciona select{display:block;width:100%;max-width:100%;padding:11px;border:1px solid #CBD5E1;border-radius:7px;color:#1F2937;background:#fff;font-size:14px;line-height:1.5;white-space:normal}
+#hash-relaciona select:focus{outline:2px solid #3B82F6;outline-offset:2px}
+#hash-relaciona .hr-feedback{font-size:13px;margin-top:9px}
+#hash-relaciona .hr-feedback:empty{display:none}
+#hash-relaciona .hr-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:24px 0}
+#hash-relaciona button{border:0;border-radius:8px;padding:12px 24px;font-size:15px;font-weight:bold;cursor:pointer}
+#hash-relaciona .hr-check{background:#3B82F6;color:#fff}
+#hash-relaciona .hr-reset{background:#10B981;color:#fff}
+#hash-relaciona button:focus-visible{outline:3px solid #FBBF24;outline-offset:3px}
+#hash-relaciona .hr-result{display:none;background:#F9FAFB;border:1px solid #CBD5E1;border-radius:10px;padding:24px;text-align:center;margin:20px 0}
+#hash-relaciona .hr-score{font-size:44px;font-weight:bold;color:#2563EB;line-height:1.2}
+#hash-relaciona .hr-note{background:#FFFBEB;border-left:5px solid #FBBF24;padding:15px 18px;border-radius:7px;font-size:14px;margin-top:20px}
+#hash-relaciona .hr-footer{background:#1F2937;color:#fff;padding:20px 24px;border-radius:9px;margin-top:25px}
+@media(max-width:550px){
+#hash-relaciona .hr-stats{gap:6px}
+#hash-relaciona .hr-stat{padding:10px 4px}
+#hash-relaciona .hr-stat strong{font-size:19px}
+#hash-relaciona .hr-stat span{font-size:11px}
+#hash-relaciona .hr-item{padding:13px}
+#hash-relaciona .hr-header h2{font-size:23px}
+#hash-relaciona button{width:100%}
+}
+</style>
+<div id="hash-relaciona" style="font-family: Arial,Helvetica,sans-serif; max-width: 1100px; margin: 0 auto; color: #1f2937; line-height: 1.6;">
+<div class="hr-header"><span class="hr-label">Estructuras de Datos en Python</span>
+<h2>Juego de relacionar: Tablas Hash</h2>
+<p style="margin: 0; color: #fff;">Relaciona los conceptos con sus definiciones y comprueba tus conocimientos de los seis subtemas.</p>
+</div>
+<div class="hr-intro"><strong>Indicaciones:</strong>
+<p style="margin: 8px 0 0;">Lee cada concepto y selecciona la definición correcta en el menú desplegable. Cada relación correcta equivale a <strong>1 punto</strong>. Al finalizar, selecciona <strong>Comprobar respuestas</strong>.</p>
+<p style="margin: 8px 0 0;">Puedes repetir la actividad las veces que necesites. En cada intento se mezclará el orden de las definiciones.</p>
+</div>
+<div class="hr-stats">
+<div class="hr-stat"><strong id="hr-points">0/10</strong> <span>Puntuación</span></div>
+<div class="hr-stat"><strong id="hr-answered">0/10</strong> <span>Respondidas</span></div>
+<div class="hr-stat"><strong id="hr-attempts">0</strong> <span>Intentos realizados</span></div>
+</div>
+<div class="hr-progress" role="progressbar" aria-label="Preguntas respondidas" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="hr-progress">
+<div class="hr-progress-bar" id="hr-progress-bar"></div>
+</div>
+<div id="hr-questions"></div>
+<div class="hr-actions"><button type="button" class="hr-check" id="hr-check">Comprobar respuestas</button> <button type="button" class="hr-reset" id="hr-reset">Nuevo intento</button></div>
+<div class="hr-result" id="hr-result" aria-live="polite">
+<div style="font-size: 15px; font-weight: bold;">Resultado de la actividad</div>
+<div class="hr-score" id="hr-final-score">0/10</div>
+<p id="hr-final-message" style="margin: 12px 0 0;"></p>
+<p id="hr-final-detail" style="margin: 8px 0 0; font-size: 14px; color: #4b5563;"></p>
+</div>
+<div class="hr-note"><strong>Criterios de evaluación:</strong> 10 relaciones correctas = 10 puntos. Cada error o respuesta sin seleccionar equivale a 0 puntos. La puntuación corresponde al intento actual y no existe límite de intentos.</div>
+<div class="hr-footer"><strong style="color: #fbbf24;">Contenido evaluado</strong>
+<p style="margin: 8px 0 0; color: #fff;">Fundamentos de tablas hash, funciones hash, colisiones, encadenamiento separado, direccionamiento abierto, factor de carga, operaciones fundamentales, diccionarios, implementación mediante clases y aplicaciones prácticas.</p>
+</div>
+<script>
+(function () {
+  "use strict";
+
+  function iniciarJuegoHash() {
+    var root = document.getElementById("hash-relaciona");
+    if (!root || root.getAttribute("data-ready") === "1") return;
+    root.setAttribute("data-ready", "1");
+
+    var datos = [
+      {
+        id: 1,
+        concepto: "Tabla hash",
+        respuesta: "Estructura de datos que almacena información mediante pares clave-valor y permite búsquedas eficientes."
+      },
+      {
+        id: 2,
+        concepto: "Función hash",
+        respuesta: "Procedimiento que transforma una clave en un valor numérico utilizado para calcular un índice de almacenamiento."
+      },
+      {
+        id: 3,
+        concepto: "Colisión",
+        respuesta: "Situación en la que dos o más claves diferentes generan el mismo índice dentro de una tabla hash."
+      },
+      {
+        id: 4,
+        concepto: "Encadenamiento separado",
+        respuesta: "Método de resolución de colisiones que almacena múltiples registros en una misma posición utilizando listas o nodos enlazados."
+      },
+      {
+        id: 5,
+        concepto: "Direccionamiento abierto",
+        respuesta: "Método que resuelve colisiones buscando otra posición disponible dentro de la propia tabla."
+      },
+      {
+        id: 6,
+        concepto: "Factor de carga",
+        respuesta: "Relación entre la cantidad de elementos almacenados y el número de posiciones disponibles en una tabla hash."
+      },
+      {
+        id: 7,
+        concepto: "Operaciones fundamentales",
+        respuesta: "Acciones que permiten insertar, buscar, actualizar y eliminar registros mediante sus claves."
+      },
+      {
+        id: 8,
+        concepto: "Diccionario (dict)",
+        respuesta: "Estructura integrada de Python que administra asociaciones clave-valor utilizando mecanismos hash."
+      },
+      {
+        id: 9,
+        concepto: "Clase HashTable",
+        respuesta: "Implementación mediante programación orientada a objetos que encapsula el almacenamiento, la función hash y las operaciones de la tabla."
+      },
+      {
+        id: 10,
+        concepto: "Aplicaciones prácticas de las tablas hash",
+        respuesta: "Uso de estructuras hash para gestionar inventarios, implementar cachés, contar frecuencias y detectar duplicados."
+      }
+    ];
+
+    var preguntas = root.querySelector("#hr-questions");
+    var puntos = root.querySelector("#hr-points");
+    var respondidas = root.querySelector("#hr-answered");
+    var intentos = root.querySelector("#hr-attempts");
+    var progreso = root.querySelector("#hr-progress");
+    var barra = root.querySelector("#hr-progress-bar");
+    var resultado = root.querySelector("#hr-result");
+    var notaFinal = root.querySelector("#hr-final-score");
+    var mensajeFinal = root.querySelector("#hr-final-message");
+    var detalleFinal = root.querySelector("#hr-final-detail");
+    var btnComprobar = root.querySelector("#hr-check");
+    var btnReiniciar = root.querySelector("#hr-reset");
+
+    var numeroIntentos = 0;
+    var evaluado = false;
+    var opciones = [];
+
+    function mezclar(elementos) {
+      var copia = elementos.slice();
+
+      for (var i = copia.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temporal = copia[i];
+        copia[i] = copia[j];
+        copia[j] = temporal;
+      }
+
+      return copia;
+    }
+
+    function contarRespondidas() {
+      var seleccionados = preguntas.querySelectorAll("select");
+      var cantidad = 0;
+
+      for (var i = 0; i < seleccionados.length; i++) {
+        if (seleccionados[i].value !== "") cantidad++;
+      }
+
+      respondidas.textContent = cantidad + "/10";
+      barra.style.width = (cantidad * 10) + "%";
+      progreso.setAttribute("aria-valuenow", String(cantidad));
+      return cantidad;
+    }
+
+    function crearJuego() {
+      evaluado = false;
+      opciones = mezclar(datos);
+      preguntas.innerHTML = "";
+
+      for (var i = 0; i < datos.length; i++) {
+        var pregunta = datos[i];
+
+        var tarjeta = document.createElement("div");
+        tarjeta.className = "hr-item";
+
+        var numero = document.createElement("div");
+        numero.className = "hr-number";
+        numero.textContent = "Elemento " + (i + 1);
+
+        var concepto = document.createElement("div");
+        concepto.className = "hr-concept";
+        concepto.textContent = pregunta.concepto;
+
+        var selector = document.createElement("select");
+        selector.id = "hr-select-" + pregunta.id;
+        selector.setAttribute("aria-label", "Definición de " + pregunta.concepto);
+        selector.setAttribute("data-correct", String(pregunta.id));
+
+        var vacio = document.createElement("option");
+        vacio.value = "";
+        vacio.textContent = "Selecciona la definición correcta...";
+        selector.appendChild(vacio);
+
+        for (var j = 0; j < opciones.length; j++) {
+          var opcion = document.createElement("option");
+          opcion.value = String(opciones[j].id);
+          opcion.textContent = opciones[j].respuesta;
+          selector.appendChild(opcion);
+        }
+
+        selector.addEventListener("change", function () {
+          if (evaluado) {
+            evaluado = false;
+            puntos.textContent = "0/10";
+            resultado.style.display = "none";
+
+            var tarjetas = preguntas.querySelectorAll(".hr-item");
+            for (var n = 0; n < tarjetas.length; n++) {
+              tarjetas[n].classList.remove("hr-correct", "hr-wrong");
+              tarjetas[n].querySelector(".hr-feedback").textContent = "";
+            }
+          }
+          contarRespondidas();
+        });
+
+        var feedback = document.createElement("div");
+        feedback.className = "hr-feedback";
+        feedback.setAttribute("aria-live", "polite");
+
+        tarjeta.appendChild(numero);
+        tarjeta.appendChild(concepto);
+        tarjeta.appendChild(selector);
+        tarjeta.appendChild(feedback);
+        preguntas.appendChild(tarjeta);
+      }
+
+      puntos.textContent = "0/10";
+      respondidas.textContent = "0/10";
+      barra.style.width = "0%";
+      progreso.setAttribute("aria-valuenow", "0");
+      resultado.style.display = "none";
+    }
+
+    function comprobar() {
+      var tarjetas = preguntas.querySelectorAll(".hr-item");
+      var aciertos = 0;
+      var noRespondidas = 0;
+
+      for (var i = 0; i < tarjetas.length; i++) {
+        var tarjeta = tarjetas[i];
+        var selector = tarjeta.querySelector("select");
+        var feedback = tarjeta.querySelector(".hr-feedback");
+        var correcta = selector.getAttribute("data-correct");
+
+        tarjeta.classList.remove("hr-correct", "hr-wrong");
+        feedback.textContent = "";
+
+        if (selector.value === correcta) {
+          aciertos++;
+          tarjeta.classList.add("hr-correct");
+          feedback.style.color = "#047857";
+          feedback.textContent = "✓ Correcto. Relación acertada.";
+        } else {
+          tarjeta.classList.add("hr-wrong");
+          feedback.style.color = "#B91C1C";
+
+          if (selector.value === "") {
+            noRespondidas++;
+            feedback.textContent = "✗ Sin respuesta. ";
+          } else {
+            feedback.textContent = "✗ Relación incorrecta. ";
+          }
+
+          feedback.appendChild(document.createTextNode("Respuesta correcta: " + datos[i].respuesta));
+        }
+      }
+
+      numeroIntentos++;
+      evaluado = true;
+
+      puntos.textContent = aciertos + "/10";
+      intentos.textContent = String(numeroIntentos);
+      notaFinal.textContent = aciertos + "/10";
+      contarRespondidas();
+
+      if (aciertos === 10) {
+        mensajeFinal.textContent = "¡Excelente! Has relacionado correctamente todos los conceptos.";
+        notaFinal.style.color = "#047857";
+      } else if (aciertos >= 8) {
+        mensajeFinal.textContent = "¡Muy buen resultado! Revisa las relaciones que necesitan corrección.";
+        notaFinal.style.color = "#047857";
+      } else if (aciertos >= 6) {
+        mensajeFinal.textContent = "Buen avance. Repasa los conceptos en los que tuviste dificultades.";
+        notaFinal.style.color = "#2563EB";
+      } else {
+        mensajeFinal.textContent = "Es recomendable revisar nuevamente los conceptos y realizar otro intento.";
+        notaFinal.style.color = "#B45309";
+      }
+
+      detalleFinal.textContent =
+        "Aciertos: " + aciertos +
+        " | Incorrectas: " + (10 - aciertos - noRespondidas) +
+        " | Sin responder: " + noRespondidas +
+        " | Intento: " + numeroIntentos;
+
+      resultado.style.display = "block";
+    }
+
+    btnComprobar.addEventListener("click", comprobar);
+    btnReiniciar.addEventListener("click", crearJuego);
+
+    crearJuego();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarJuegoHash);
+  } else {
+    iniciarJuegoHash();
+  }
+})();
+</script>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div></main><div class="nav-buttons">
+<a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" title="Anterior" class="nav-button nav-button-left"><span>Anterior</span></a>
+<span class="nav-button nav-button-right" aria-hidden="true"><span>Siguiente</span></span>
+</div>
+<footer id="siteFooter"><div id="siteFooterContent"> <div id="packageLicense" class="cc cc-by-sa"> <p> <span class="license-label">Licencia: </span><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Reconocimiento - compartir igual 4.0</a></p>
+</div>
+</div></footer>
+</div>
+<p id="made-with-eXe"> <a href="https://exelearning.net/" target="_blank" rel="noopener"> <span>Creado con eXeLearning <span>(Ventana nueva)</span></span></a></p>
+</body>
+</html>

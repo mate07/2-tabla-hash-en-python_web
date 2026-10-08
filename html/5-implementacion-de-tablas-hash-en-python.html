@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es" id="exe-page-muyqnu41-hbil73aka">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="eXeLearning v4.0.5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="license" type="text/html" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<title>5. Implementación de tablas hash en Python | 2. Tabla Hash en Python</title>
+<link rel="icon" type="image/x-icon" href="../libs/favicon.ico">
+<script>document.querySelector("html").classList.add("js");</script><script src="../libs/jquery/jquery.min.js"> </script><script src="../libs/common_i18n.js"> </script><script src="../libs/common.js"> </script><script src="../libs/exe_export.js"> </script><script src="../libs/bootstrap/bootstrap.bundle.min.js"> </script><link rel="stylesheet" href="../libs/bootstrap/bootstrap.min.css">
+<script src="../idevices/text/text.js"></script><link rel="stylesheet" href="../idevices/text/text.css">
+<link rel="stylesheet" href="../content/css/base.css"><script src="../theme/style.js"> </script><link rel="stylesheet" href="../theme/style.css">
+</head>
+<body class="exe-export exe-web-site">
+<script>document.body.className+=" js"</script>
+<div class="exe-content exe-export pre-js siteNav-hidden"><a href="#page-muyqnu41-hbil73aka" id="skipNav">Skip to content</a> <nav id="siteNav">
+<ul>
+<li> <a href="../index.html" class="main-node no-ch">Inicio</a>
+</li>
+<li> <a href="../html/1-fundamentos-de-las-tablas-hash.html" class="no-ch">1. Fundamentos de las tablas hash</a>
+</li>
+<li> <a href="../html/2-funciones-hash-y-distribucion-de-claves.html" class="no-ch">2. Funciones hash y distribución de claves</a>
+</li>
+<li> <a href="../html/3-colisiones-y-metodos-de-resolucion.html" class="no-ch">3. Colisiones y métodos de resolución</a>
+</li>
+<li> <a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" class="no-ch">4. Operaciones fundamentales de una tabla hash</a>
+</li>
+<li class="active"> <a href="../html/5-implementacion-de-tablas-hash-en-python.html" class="active no-ch">5. Implementación de tablas hash en Python</a>
+</li>
+<li> <a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" class="no-ch">6. Aplicaciones prácticas de las tablas hash</a>
+</li>
+<li> <a href="../html/repaso-tabla-hash-en-python.html" class="no-ch">Repaso: Tabla Hash en Python</a>
+</li>
+</ul>
+</nav><main id="page-muyqnu41-hbil73aka" class="page"> 
+<header class="main-header">
+<div class="package-header"><p class="package-title">2. Tabla Hash en Python</p></div>
+<div class="page-header"><h1 class="page-title">5. Implementación de tablas hash en Python</h1></div>
+</header><div id="page-content-page-muyqnu41-hbil73aka" class="page-content">
+<article id="block-muysispl-z8740oa3z" class="box">
+<header class="box-head no-icon">
+<h1 class="box-title">Contenido</h1>
+<button class="box-toggle box-toggle-on" title="Toggle content">
+<span>Toggle content</span>
+</button></header>
+<div class="box-content">
+<div id="idevice-1791418836437-rdy0zo133" class="idevice_node text" data-idevice-path="../idevices/text/" data-idevice-type="text" data-idevice-component-type="json" data-idevice-json-data="{&quot;ideviceId&quot;:&quot;idevice-1791418836437-rdy0zo133&quot;}">
+<div class="exe-text-template">
+    <div style="font-family: Arial, Helvetica, sans-serif; color: #1f2937; line-height: 1.65; max-width: 1200px; margin: 0 auto;"><!-- ENCABEZADO PRINCIPAL -->
+<div style="background: #3B82F6; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-bottom: 24px;">
+<div style="display: inline-block; background: #FBBF24; color: #1f2937; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 12px;">Estructuras de Datos en Python</div>
+<h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 29px; font-weight: 600;">Implementación de tablas hash en Python</h2>
+<p style="margin: 0; color: #ffffff; font-size: 17px;">Implementar tablas hash utilizando diccionarios, programación orientada a objetos y listas enlazadas para almacenar, consultar, actualizar y eliminar información de manera eficiente.</p>
+</div>
+<!-- INTRODUCCIÓN -->
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-left: 6px solid #10B981; padding: 20px 24px; border-radius: 8px; margin-bottom: 30px;">
+<h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 22px;">Introducción</h3>
+<p style="margin: 0 0 12px 0;">Las tablas hash permiten almacenar, organizar y recuperar información mediante asociaciones entre claves y valores. Su funcionamiento se basa en funciones hash que determinan las posiciones de almacenamiento y en mecanismos que permiten resolver las colisiones.</p>
+<p style="margin: 0 0 12px 0;">En Python, los <strong>diccionarios (<code>dict</code>)</strong> proporcionan una implementación eficiente de una estructura asociativa basada en tablas hash. Permiten administrar registros mediante instrucciones sencillas, sin necesidad de desarrollar manualmente los mecanismos internos de almacenamiento.</p>
+<p style="margin: 0 0 12px 0;">Sin embargo, comprender cómo construir una tabla hash desde cero resulta fundamental para conocer el funcionamiento de las estructuras de datos, la programación orientada a objetos y los mecanismos de resolución de colisiones.</p>
+<p style="margin: 0;">En este subtema se abordará el uso de diccionarios, la creación de una clase <code>HashTable</code>, el desarrollo de sus operaciones fundamentales y la implementación de colisiones mediante listas enlazadas.</p>
+</div>
+<!-- 5.1 DICCIONARIOS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.1 Uso de diccionarios (dict) como tablas hash</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">Un <strong>diccionario en Python</strong> es una estructura de datos que almacena elementos mediante pares clave-valor. Internamente, utiliza una implementación basada en tablas hash para facilitar la localización de registros.</p>
+</div>
+<p>A diferencia de una lista, donde los elementos se consultan mediante índices numéricos, un diccionario permite utilizar claves como cadenas, números y otros objetos hashables.</p>
+<h4 style="color: #1f2937; font-size: 20px; margin: 24px 0 15px 0;">Características de los diccionarios</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 22px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Claves únicas</strong>
+<p style="margin: 8px 0 0 0;">Cada clave identifica una única entrada dentro del diccionario.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Acceso eficiente</strong>
+<p style="margin: 8px 0 0 0;">Permite recuperar valores mediante claves con una complejidad promedio O(1).</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Valores flexibles</strong>
+<p style="margin: 8px 0 0 0;">Admite cadenas, números, listas, diccionarios y otros objetos.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Estructura dinámica</strong>
+<p style="margin: 8px 0 0 0;">Permite incorporar y eliminar registros durante la ejecución.</p>
+</div>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Creación de un diccionario</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>productos = {
+    &quot;P001&quot;: &quot;Teclado&quot;,
+    &quot;P002&quot;: &quot;Mouse&quot;,
+    &quot;P003&quot;: &quot;Monitor&quot;
+}
+
+print(productos)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>{&#039;P001&#039;: &#039;Teclado&#039;, &#039;P002&#039;: &#039;Mouse&#039;, &#039;P003&#039;: &#039;Monitor&#039;}</code></pre>
+</div>
+<p style="margin-top: 18px;">Cada código identifica un producto almacenado.</p>
+<h4 style="color: #3b82f6; font-size: 20px; margin-top: 26px;">Consulta de elementos</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>print(productos[&quot;P002&quot;])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>Mouse</code></pre>
+</div>
+<p style="margin-top: 18px;">Los diccionarios permiten recuperar información sin conocer la posición física donde se encuentra almacenada.</p>
+<h4 style="color: #3b82f6; font-size: 20px; margin-top: 26px;">Uso de hash() en Python</h4>
+<p>Python proporciona la función <code>hash()</code> para obtener el valor hash de objetos compatibles.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>clave = &quot;P001&quot;
+
+print(hash(clave))</code></pre>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px 24px; border-radius: 9px; margin-top: 20px;"><strong style="color: #92400e;">Consideración importante</strong>
+<p style="margin: 8px 0 0 0;">La función <code>hash()</code> devuelve un número entero que puede ser positivo o negativo. Para las cadenas de texto, este valor puede cambiar entre ejecuciones del intérprete debido a la aleatorización del hash.</p>
+<p style="margin: 10px 0 0 0;">Los diccionarios administran automáticamente las colisiones, la distribución de claves y el crecimiento de la estructura.</p>
+</div>
+</section>
+<!-- 5.2 MANIPULACIÓN -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.2 Creación y manipulación de pares clave-valor</h3>
+<p>Los diccionarios permiten realizar operaciones de inserción, búsqueda, actualización, eliminación y recorrido de registros utilizando instrucciones integradas en Python.</p>
+<!-- INSERCIÓN -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 20px;">Inserción de elementos</h4>
+<p>Se utiliza una clave para incorporar un nuevo registro.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>inventario = {}
+
+inventario[&quot;P001&quot;] = 15
+inventario[&quot;P002&quot;] = 30
+inventario[&quot;P003&quot;] = 8
+
+print(inventario)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>{&#039;P001&#039;: 15, &#039;P002&#039;: 30, &#039;P003&#039;: 8}</code></pre>
+</div>
+</div>
+<!-- BÚSQUEDA -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 20px;">Búsqueda de elementos</h4>
+<p>El método <code>get()</code> permite consultar valores mediante sus claves.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>cantidad = inventario.get(&quot;P002&quot;)
+
+print(&quot;Cantidad:&quot;, cantidad)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>Cantidad: 30</code></pre>
+</div>
+<p style="margin-bottom: 0;">Cuando la clave no existe, <code>get()</code> devuelve <code>None</code>, salvo que se indique un valor predeterminado.</p>
+</div>
+<!-- ACTUALIZACIÓN -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #FBBF24; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #92400e; margin: 0 0 12px 0; font-size: 20px;">Actualización de elementos</h4>
+<p>La asignación de un nuevo valor permite modificar una clave existente.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>inventario[&quot;P001&quot;] = 20
+
+print(inventario[&quot;P001&quot;])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>20</code></pre>
+</div>
+</div>
+<!-- ELIMINACIÓN -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 20px;">Eliminación de elementos</h4>
+<p>El método <code>pop()</code> elimina un registro y devuelve su valor.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>eliminado = inventario.pop(&quot;P003&quot;)
+
+print(&quot;Eliminado:&quot;, eliminado)
+print(inventario)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>Eliminado: 8
+{&#039;P001&#039;: 20, &#039;P002&#039;: 30}</code></pre>
+</div>
+</div>
+<!-- RECORRIDO -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 20px;">Recorrido de elementos</h4>
+<p>El método <code>items()</code> permite obtener las claves y sus valores asociados.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>for codigo, cantidad in inventario.items():
+    print(codigo, cantidad)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 14px 18px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>P001 20
+P002 30</code></pre>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Métodos frecuentes de los diccionarios</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 650px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Método u operación</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>diccionario[clave] = valor</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Inserta o reemplaza una entrada.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>diccionario[clave]</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Obtiene un valor; genera KeyError si la clave no existe.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>get(clave)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Consulta una clave sin generar KeyError por ausencia.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>pop(clave)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Elimina una entrada y devuelve su valor.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>keys()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Obtiene una vista de las claves.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>values()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Obtiene una vista de los valores.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>items()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Obtiene una vista de los pares clave-valor.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>clear()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Elimina todos los elementos del diccionario.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 5.3 CLASE HASHTABLE -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.3 Implementación de una clase HashTable</h3>
+<p>Aunque los diccionarios permiten trabajar directamente con tablas hash, desarrollar una implementación propia ayuda a comprender su organización interna.</p>
+<p>Para ello, se utilizará la <strong>programación orientada a objetos (POO)</strong> mediante una clase denominada <code>HashTable</code>.</p>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 20px 24px; border-radius: 9px; margin: 20px 0;">
+<p style="margin: 0;">Una clase permite agrupar los atributos y métodos necesarios para administrar los elementos de una tabla hash, facilitando su organización, reutilización y mantenimiento.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Componentes de la clase</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Componente</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Función</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>HashTable</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Representa la estructura de datos.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>capacity</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Define la cantidad de posiciones disponibles.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>count</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Registra la cantidad de elementos almacenados.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>buckets</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Contiene las posiciones de almacenamiento.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>_hash()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Calcula el índice correspondiente a una clave.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>En esta primera implementación se utilizarán claves enteras y listas para almacenar los registros que coincidan en un mismo índice.</p>
+<h4 style="color: #3b82f6; font-size: 20px;">Creación de la clase</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class HashTable:
+    def __init__(self, capacity):
+        if capacity &lt;= 0:
+            raise ValueError(&quot;Capacidad inválida&quot;)
+
+        self.capacity = capacity
+        self.count = 0
+        self.buckets = [
+            [] for _ in range(capacity)
+        ]
+
+    def _hash(self, key):
+        return key % self.capacity</code></pre>
+<h4 style="color: #1f2937; font-size: 20px;">Explicación del código</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Constructor __init__()</strong>
+<p style="margin: 8px 0 0 0;">Se ejecuta cuando se crea un objeto e inicializa sus atributos.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Atributo capacity</strong>
+<p style="margin: 8px 0 0 0;">Define la cantidad de posiciones disponibles.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Atributo count</strong>
+<p style="margin: 8px 0 0 0;">Registra la cantidad de elementos almacenados.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Atributo buckets</strong>
+<p style="margin: 8px 0 0 0;">Contiene una lista por cada posición de almacenamiento.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Método _hash()</strong>
+<p style="margin: 8px 0 0 0;">Calcula el índice utilizando el operador módulo.</p>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Representación conceptual</h4>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 20px 0;">
+<div style="max-width: 480px; margin: 0 auto;">
+<div style="background: #1F2937; color: #ffffff; padding: 18px; border-radius: 8px; text-align: center; margin-bottom: 15px;"><strong style="font-size: 20px;">Objeto HashTable</strong>
+<p style="margin: 7px 0 0 0; color: #ffffff;">capacity = 5 | count = 0</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="display: flex; gap: 10px; align-items: center;"><strong style="width: 25px;">0</strong>
+<div style="flex: 1; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; text-align: center;">[ ]</div>
+</div>
+<div style="display: flex; gap: 10px; align-items: center;"><strong style="width: 25px;">1</strong>
+<div style="flex: 1; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; text-align: center;">[ ]</div>
+</div>
+<div style="display: flex; gap: 10px; align-items: center;"><strong style="width: 25px;">2</strong>
+<div style="flex: 1; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; text-align: center;">[ ]</div>
+</div>
+<div style="display: flex; gap: 10px; align-items: center;"><strong style="width: 25px;">3</strong>
+<div style="flex: 1; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; text-align: center;">[ ]</div>
+</div>
+<div style="display: flex; gap: 10px; align-items: center;"><strong style="width: 25px;">4</strong>
+<div style="flex: 1; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; text-align: center;">[ ]</div>
+</div>
+</div>
+</div>
+<p style="margin: 16px 0 0 0; text-align: center; font-size: 14px; color: #4b5563;">Inicialmente, todas las posiciones contienen listas vacías.</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Creación de un objeto</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>tabla = HashTable(5)
+
+print(tabla.capacity)
+print(tabla.count)
+print(tabla.buckets)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>5
+0
+[[], [], [], [], []]</code></pre>
+</div>
+<p style="margin-top: 18px;">El objeto dispone de cinco posiciones y no contiene registros almacenados.</p>
+</section>
+<!-- 5.4 MÉTODOS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.4 Desarrollo de métodos de inserción, búsqueda y eliminación</h3>
+<p>Una vez definida la clase, es necesario incorporar los métodos que permiten administrar los registros: inserción, búsqueda, actualización, eliminación y visualización.</p>
+<div style="background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 16px 20px; border-radius: 8px; margin: 20px 0;">
+<p style="margin: 0;"><strong>Nota de implementación:</strong> los siguientes métodos se incorporan dentro de la clase <code>HashTable</code> presentada en el apartado anterior, respetando la indentación correspondiente.</p>
+</div>
+<!-- INSERT -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 20px;">Método de inserción insert()</h4>
+<p>Recibe una clave y un valor, calcula el índice y almacena el registro cuando la clave no existe.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def insert(self, key, value):
+    index = self._hash(key)
+
+    for record in self.buckets[index]:
+        if record[0] == key:
+            return False
+
+    self.buckets[index].append([key, value])
+    self.count += 1
+
+    return True</code></pre>
+<ol style="padding-left: 24px; margin-bottom: 0;">
+<li>Calcula el índice mediante <code>_hash()</code>.</li>
+<li>Revisa los registros almacenados en la posición.</li>
+<li>Verifica que la clave no exista.</li>
+<li>Agrega el nuevo par clave-valor.</li>
+<li>Incrementa el contador.</li>
+<li>Devuelve <code>True</code> cuando se realiza la inserción.</li>
+</ol>
+</div>
+<!-- SEARCH -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 20px;">Método de búsqueda search()</h4>
+<p>Permite recuperar el valor asociado a una clave.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def search(self, key):
+    index = self._hash(key)
+
+    for record in self.buckets[index]:
+        if record[0] == key:
+            return record[1]
+
+    return None</code></pre>
+<p style="margin-bottom: 0;">El método localiza la posición y revisa sus registros. Devuelve el valor si encuentra la clave y <code>None</code> en caso contrario.</p>
+</div>
+<!-- UPDATE -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #FBBF24; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #92400e; margin: 0 0 12px 0; font-size: 20px;">Método de actualización update()</h4>
+<p>Modifica el valor de una clave previamente almacenada.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def update(self, key, new_value):
+    index = self._hash(key)
+
+    for record in self.buckets[index]:
+        if record[0] == key:
+            record[1] = new_value
+            return True
+
+    return False</code></pre>
+<p style="margin-bottom: 0;">Conserva la clave original y modifica únicamente el valor asociado.</p>
+</div>
+<!-- DELETE -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 20px;">Método de eliminación delete()</h4>
+<p>Retira un registro mediante su clave y actualiza el contador.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def delete(self, key):
+    index = self._hash(key)
+
+    for position, record in enumerate(
+        self.buckets[index]
+    ):
+        if record[0] == key:
+            self.buckets[index].pop(position)
+            self.count -= 1
+            return True
+
+    return False</code></pre>
+<p style="margin-bottom: 0;">Cuando se encuentra la clave, se elimina el registro y se disminuye la cantidad de elementos almacenados.</p>
+</div>
+<!-- AUXILIARES -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 20px;">Métodos auxiliares</h4>
+<p>Permiten consultar el tamaño, verificar si la estructura está vacía y mostrar su contenido.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def size(self):
+    return self.count
+
+
+def is_empty(self):
+    return self.count == 0
+
+
+def display(self):
+    for index, records in enumerate(self.buckets):
+        print(f&quot;{index}: {records}&quot;)</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Resumen de métodos</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Método</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Función</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>insert(key, value)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Inserta una clave nueva.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">True o False</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>search(key)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Recupera el valor asociado.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Valor o None</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>update(key, value)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Modifica un registro existente.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">True o False</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>delete(key)</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Elimina un registro.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">True o False</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>size()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Consulta la cantidad de registros.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Número entero</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>is_empty()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Comprueba si está vacía.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Booleano</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>display()</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Muestra la distribución.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Salida en consola</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 5.5 LISTAS ENLAZADAS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.5 Manejo de colisiones mediante listas enlazadas</h3>
+<p>El encadenamiento separado permite resolver colisiones almacenando varios elementos en una misma posición.</p>
+<p>En los ejemplos anteriores, cada posición contenía una lista de Python. Sin embargo, también es posible implementar el encadenamiento mediante <strong>listas enlazadas (linked lists)</strong>.</p>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 20px 24px; border-radius: 9px; margin: 20px 0;">
+<p style="margin: 0; font-size: 18px;">Una <strong>lista enlazada</strong> está formada por nodos. Cada nodo almacena información y una referencia al siguiente elemento de la secuencia.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Estructura de un nodo</h4>
+<p>Cada nodo de la tabla hash tendrá tres atributos:</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">key</strong>
+<p style="margin: 8px 0 0 0;">Identificador del registro.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">value</strong>
+<p style="margin: 8px 0 0 0;">Información asociada con la clave.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">next</strong>
+<p style="margin: 8px 0 0 0;">Referencia al siguiente nodo de la lista.</p>
+</div>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Creación de la clase HashNode</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class HashNode:
+    def __init__(self, key, value, next=None):
+        self.key = key
+        self.value = value
+        self.next = next</code></pre>
+<p>El atributo <code>next</code> permite establecer cadenas de nodos que comparten una misma posición de la tabla.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Representación conceptual del encadenamiento</h4>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 20px 0;">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px;">
+<div style="background: #EFF6FF; border: 1px solid #3B82F6; padding: 16px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">Índice 5</strong>
+<div style="font-size: 13px;">Inicio</div>
+</div>
+<span style="font-size: 26px; color: #3b82f6;">→</span>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 16px; border-radius: 8px; text-align: center;"><strong style="color: #065f46;">Nodo 15</strong></div>
+<span style="font-size: 26px; color: #3b82f6;">→</span>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 16px; border-radius: 8px; text-align: center;"><strong style="color: #065f46;">Nodo 25</strong></div>
+<span style="font-size: 26px; color: #3b82f6;">→</span>
+<div style="background: #D1FAE5; border: 1px solid #10B981; padding: 16px; border-radius: 8px; text-align: center;"><strong style="color: #065f46;">Nodo 35</strong></div>
+<span style="font-size: 22px; color: #6b7280;">→ None</span></div>
+<p style="text-align: center; color: #4b5563; font-size: 14px; margin: 18px 0 0 0;">Las claves 15, 25 y 35 comparten el índice 5 y se conectan mediante referencias al siguiente nodo.</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Tabla hash con listas enlazadas</h4>
+<p>En lugar de almacenar listas dentro de cada posición, se almacena una referencia al primer nodo.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class HashTable:
+    def __init__(self, capacity):
+        if capacity &lt;= 0:
+            raise ValueError(&quot;Capacidad inválida&quot;)
+
+        self.capacity = capacity
+        self.count = 0
+        self.buckets = [None] * capacity
+
+    def _hash(self, key):
+        return key % self.capacity</code></pre>
+<p>Inicialmente, las posiciones contienen <code>None</code>, porque no existe ningún nodo asociado.</p>
+<div style="background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 16px 20px; border-radius: 8px; margin: 20px 0;">
+<p style="margin: 0;"><strong>Nota:</strong> los siguientes métodos se integran dentro de esta nueva versión de <code>HashTable</code>, que utiliza nodos enlazados en lugar de listas internas.</p>
+</div>
+<!-- INSERTAR NODOS -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #1d4ed8; margin: 0 0 12px 0; font-size: 20px;">Inserción mediante nodos</h4>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def insert(self, key, value):
+    index = self._hash(key)
+
+    current = self.buckets[index]
+
+    while current is not None:
+        if current.key == key:
+            current.value = value
+            return False
+
+        current = current.next
+
+    new_node = HashNode(
+        key,
+        value,
+        self.buckets[index]
+    )
+
+    self.buckets[index] = new_node
+    self.count += 1
+
+    return True</code></pre>
+<p style="margin-bottom: 0;">El procedimiento recorre la cadena y comprueba si la clave existe. Si no existe, crea un nodo y lo incorpora al inicio de la lista enlazada. Si existe, actualiza su valor sin crear otro nodo.</p>
+</div>
+<!-- BÚSQUEDA NODOS -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #047857; margin: 0 0 12px 0; font-size: 20px;">Búsqueda mediante nodos</h4>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def search(self, key):
+    index = self._hash(key)
+
+    current = self.buckets[index]
+
+    while current is not None:
+        if current.key == key:
+            return current.value
+
+        current = current.next
+
+    return None</code></pre>
+<p style="margin-bottom: 0;">La función recorre la cadena hasta encontrar la clave solicitada o llegar al final.</p>
+</div>
+<!-- ELIMINACIÓN NODOS -->
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #FBBF24; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #92400e; margin: 0 0 12px 0; font-size: 20px;">Eliminación mediante nodos</h4>
+<pre style="background: #1F2937; color: #ffffff; padding: 20px; border-radius: 8px; font-size: 14px; overflow: auto;"><code>def delete(self, key):
+    index = self._hash(key)
+
+    current = self.buckets[index]
+    previous = None
+
+    while current is not None:
+        if current.key == key:
+
+            if previous is None:
+                self.buckets[index] = current.next
+            else:
+                previous.next = current.next
+
+            self.count -= 1
+            return True
+
+        previous = current
+        current = current.next
+
+    return False</code></pre>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 18px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px;"><strong style="color: #1d4ed8;">Primer nodo</strong>
+<p style="margin: 8px 0 0 0;">La posición de la tabla debe apuntar al siguiente nodo.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 18px; border-radius: 8px;"><strong style="color: #047857;">Nodo intermedio o final</strong>
+<p style="margin: 8px 0 0 0;">El nodo anterior actualiza su referencia para omitir el nodo eliminado.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 5.6 EJEMPLO COMPLETO -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">5.6 Ejemplo completo de funcionamiento en Python</h3>
+<p>El siguiente programa integra una tabla hash implementada mediante programación orientada a objetos y listas enlazadas para resolver colisiones.</p>
+<p>Se utilizarán claves enteras que representan códigos de productos. El ejemplo incorpora las operaciones de inserción, búsqueda, actualización, eliminación, consulta de tamaño y visualización.</p>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 22px 24px; border-radius: 9px; margin: 22px 0;">
+<h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 20px;">Implementación completa de HashTable y HashNode</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class HashNode:
+    def __init__(self, key, value, next=None):
+        self.key = key
+        self.value = value
+        self.next = next
+
+
+class HashTable:
+    def __init__(self, capacity):
+        if capacity &lt;= 0:
+            raise ValueError(&quot;Capacidad inválida&quot;)
+
+        self.capacity = capacity
+        self.count = 0
+        self.buckets = [None] * capacity
+
+    def _hash(self, key):
+        return key % self.capacity
+
+    def insert(self, key, value):
+        index = self._hash(key)
+        current = self.buckets[index]
+
+        while current is not None:
+            if current.key == key:
+                current.value = value
+                return False
+
+            current = current.next
+
+        new_node = HashNode(
+            key,
+            value,
+            self.buckets[index]
+        )
+
+        self.buckets[index] = new_node
+        self.count += 1
+
+        return True
+
+    def search(self, key):
+        index = self._hash(key)
+        current = self.buckets[index]
+
+        while current is not None:
+            if current.key == key:
+                return current.value
+
+            current = current.next
+
+        return None
+
+    def update(self, key, value):
+        index = self._hash(key)
+        current = self.buckets[index]
+
+        while current is not None:
+            if current.key == key:
+                current.value = value
+                return True
+
+            current = current.next
+
+        return False
+
+    def delete(self, key):
+        index = self._hash(key)
+
+        current = self.buckets[index]
+        previous = None
+
+        while current is not None:
+            if current.key == key:
+
+                if previous is None:
+                    self.buckets[index] = current.next
+                else:
+                    previous.next = current.next
+
+                self.count -= 1
+                return True
+
+            previous = current
+            current = current.next
+
+        return False
+
+    def size(self):
+        return self.count
+
+    def is_empty(self):
+        return self.count == 0
+
+    def display(self):
+        for index in range(self.capacity):
+            current = self.buckets[index]
+            elements = []
+
+            while current is not None:
+                elements.append(
+                    f&quot;{current.key}:{current.value}&quot;
+                )
+                current = current.next
+
+            print(f&quot;{index}: {elements}&quot;)
+
+
+# Crear tabla hash
+products = HashTable(10)
+
+# Insertar productos
+products.insert(15, &quot;Teclado&quot;)
+products.insert(25, &quot;Mouse&quot;)
+products.insert(35, &quot;Monitor&quot;)
+products.insert(12, &quot;Impresora&quot;)
+
+# Buscar producto
+print(&quot;Búsqueda:&quot;, products.search(25))
+
+# Actualizar producto
+products.update(25, &quot;Mouse inalámbrico&quot;)
+print(&quot;Actualizado:&quot;, products.search(25))
+
+# Eliminar producto
+products.delete(15)
+
+# Consultar tamaño
+print(&quot;Cantidad:&quot;, products.size())
+
+# Mostrar tabla
+print(&quot;\nTabla final:&quot;)
+products.display()</code></pre>
+<h4 style="color: #047857; margin: 20px 0 12px 0;">Resultado de la ejecución</h4>
+<pre style="background: #ECFDF5; color: #065f46; border: 1px solid #A7F3D0; padding: 18px 20px; border-radius: 8px; overflow: auto; font-family: Consolas, Monaco, monospace; font-size: 14px;"><code>Búsqueda: Mouse
+Actualizado: Mouse inalámbrico
+Cantidad: 3
+
+Tabla final:
+0: []
+1: []
+2: [&#039;12:Impresora&#039;]
+3: []
+4: []
+5: [&#039;35:Monitor&#039;, &#039;25:Mouse inalámbrico&#039;]
+6: []
+7: []
+8: []
+9: []</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Representación de la tabla final</h4>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 20px 0;">
+<div style="max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 5px;">
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">0</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">1</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px; color: #047857;">2</strong>
+<div style="flex: 1; background: #D1FAE5; border: 1px solid #10B981; padding: 9px; text-align: center;">12 : Impresora → None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">3</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">4</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px; color: #047857;">5</strong>
+<div style="flex: 1; background: #D1FAE5; border: 2px solid #10B981; padding: 9px; text-align: center; font-weight: bold;">35 : Monitor → 25 : Mouse inalámbrico → None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">6</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">7</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">8</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><strong style="width: 25px;">9</strong>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 9px; text-align: center;">None</div>
+</div>
+</div>
+<p style="text-align: center; font-size: 14px; color: #4b5563; margin: 16px 0 0 0;">Distribución final después de realizar las operaciones sobre la tabla hash.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin-top: 20px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Clase HashNode</strong>
+<p style="margin: 8px 0 0 0;">Representa los elementos de una lista enlazada y almacena clave, valor y referencia al siguiente nodo.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Clase HashTable</strong>
+<p style="margin: 8px 0 0 0;">Administra la estructura y proporciona métodos para las operaciones fundamentales.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Función hash</strong>
+<p style="margin: 8px 0 0 0;">El método <code>_hash()</code> calcula el índice mediante el operador módulo.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Inserción y colisiones</strong>
+<p style="margin: 8px 0 0 0;">Los nuevos nodos se incorporan al inicio de la cadena correspondiente.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Búsqueda y actualización</strong>
+<p style="margin: 8px 0 0 0;">Los métodos recorren únicamente la cadena asociada al índice calculado.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Eliminación</strong>
+<p style="margin: 8px 0 0 0;">Se actualizan las referencias para retirar un nodo sin afectar los registros restantes.</p>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 28px;">Ventajas de implementar una tabla hash mediante clases</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Ventaja</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Encapsulamiento</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Agrupa datos y operaciones dentro de una clase.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Reutilización</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Permite crear múltiples tablas hash independientes.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Organización</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Separa las responsabilidades mediante métodos.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Mantenimiento</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Facilita incorporar nuevas operaciones y validaciones.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Comprensión</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Permite estudiar el funcionamiento interno de la estructura.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Flexibilidad</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Facilita modificar la función hash o la resolución de colisiones.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 18px 22px; border-radius: 8px; margin-top: 22px;">
+<p style="margin: 0;"><strong>Aplicación práctica:</strong> la implementación mediante clases y listas enlazadas permite comprender cómo se almacenan los registros, cómo se resuelven las colisiones y cómo se administran las operaciones fundamentales dentro de una tabla hash.</p>
+</div>
+</section>
+<!-- SÍNTESIS -->
+<div style="background: #1F2937; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-top: 30px;">
+<h3 style="margin: 0 0 12px 0; color: #fbbf24; font-size: 22px;">Síntesis</h3>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Python proporciona los diccionarios <code style="color: #fbbf24;">dict</code> como estructuras asociativas eficientes que permiten almacenar información mediante pares clave-valor. Sus operaciones integradas facilitan la inserción, búsqueda, actualización y eliminación de registros.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">La implementación manual de una tabla hash mediante una clase <code style="color: #fbbf24;">HashTable</code> permite comprender cómo se organizan los elementos, cómo se calculan los índices y cómo se administran las colisiones.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">El uso de listas enlazadas mediante nodos <code style="color: #fbbf24;">HashNode</code> proporciona un mecanismo de encadenamiento separado que conserva diferentes registros asociados con una misma posición.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">La programación orientada a objetos facilita organizar estas operaciones en métodos reutilizables y mantener el control del estado de la estructura.</p>
+<p style="margin: 0; color: #ffffff;">Comprender los diccionarios integrados y las implementaciones propias permite seleccionar soluciones adecuadas según las necesidades de una aplicación y constituye la base para desarrollar sistemas de búsqueda, inventarios, catálogos y otros programas que requieren acceso eficiente a la información.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div></main><div class="nav-buttons">
+<a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" title="Anterior" class="nav-button nav-button-left"><span>Anterior</span></a>
+<a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" title="Siguiente" class="nav-button nav-button-right"><span>Siguiente</span></a>
+</div>
+<footer id="siteFooter"><div id="siteFooterContent"> <div id="packageLicense" class="cc cc-by-sa"> <p> <span class="license-label">Licencia: </span><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Reconocimiento - compartir igual 4.0</a></p>
+</div>
+</div></footer>
+</div>
+<p id="made-with-eXe"> <a href="https://exelearning.net/" target="_blank" rel="noopener"> <span>Creado con eXeLearning <span>(Ventana nueva)</span></span></a></p>
+</body>
+</html>

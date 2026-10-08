@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es" id="exe-page-muyqn1rj-lsvgh76nm">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="eXeLearning v4.0.5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="license" type="text/html" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<title>1. Fundamentos de las tablas hash | 2. Tabla Hash en Python</title>
+<link rel="icon" type="image/x-icon" href="../libs/favicon.ico">
+<script>document.querySelector("html").classList.add("js");</script><script src="../libs/jquery/jquery.min.js"> </script><script src="../libs/common_i18n.js"> </script><script src="../libs/common.js"> </script><script src="../libs/exe_export.js"> </script><script src="../libs/bootstrap/bootstrap.bundle.min.js"> </script><link rel="stylesheet" href="../libs/bootstrap/bootstrap.min.css">
+<script src="../idevices/text/text.js"></script><link rel="stylesheet" href="../idevices/text/text.css">
+<link rel="stylesheet" href="../content/css/base.css"><script src="../theme/style.js"> </script><link rel="stylesheet" href="../theme/style.css">
+</head>
+<body class="exe-export exe-web-site">
+<script>document.body.className+=" js"</script>
+<div class="exe-content exe-export pre-js siteNav-hidden"><a href="#page-muyqn1rj-lsvgh76nm" id="skipNav">Skip to content</a> <nav id="siteNav">
+<ul>
+<li> <a href="../index.html" class="main-node no-ch">Inicio</a>
+</li>
+<li class="active"> <a href="../html/1-fundamentos-de-las-tablas-hash.html" class="active no-ch">1. Fundamentos de las tablas hash</a>
+</li>
+<li> <a href="../html/2-funciones-hash-y-distribucion-de-claves.html" class="no-ch">2. Funciones hash y distribución de claves</a>
+</li>
+<li> <a href="../html/3-colisiones-y-metodos-de-resolucion.html" class="no-ch">3. Colisiones y métodos de resolución</a>
+</li>
+<li> <a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" class="no-ch">4. Operaciones fundamentales de una tabla hash</a>
+</li>
+<li> <a href="../html/5-implementacion-de-tablas-hash-en-python.html" class="no-ch">5. Implementación de tablas hash en Python</a>
+</li>
+<li> <a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" class="no-ch">6. Aplicaciones prácticas de las tablas hash</a>
+</li>
+<li> <a href="../html/repaso-tabla-hash-en-python.html" class="no-ch">Repaso: Tabla Hash en Python</a>
+</li>
+</ul>
+</nav><main id="page-muyqn1rj-lsvgh76nm" class="page"> 
+<header class="main-header">
+<div class="package-header"><p class="package-title">2. Tabla Hash en Python</p></div>
+<div class="page-header"><h1 class="page-title">1. Fundamentos de las tablas hash</h1></div>
+</header><div id="page-content-page-muyqn1rj-lsvgh76nm" class="page-content">
+<article id="block-muyqttyl-3kr0xoto4" class="box">
+<header class="box-head no-icon">
+<h1 class="box-title">Contenido</h1>
+<button class="box-toggle box-toggle-on" title="Toggle content">
+<span>Toggle content</span>
+</button></header>
+<div class="box-content">
+<div id="idevice-1791415992042-d9r7ep32x" class="idevice_node text" data-idevice-path="../idevices/text/" data-idevice-type="text" data-idevice-component-type="json" data-idevice-json-data="{&quot;ideviceId&quot;:&quot;idevice-1791415992042-d9r7ep32x&quot;}">
+<div class="exe-text-template">
+    <div style="font-family: Arial, Helvetica, sans-serif; color: #1f2937; line-height: 1.65; max-width: 1200px; margin: 0 auto;"><!-- ENCABEZADO PRINCIPAL -->
+<div style="background: #3B82F6; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-bottom: 24px;">
+<div style="display: inline-block; background: #FBBF24; color: #1f2937; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 12px;">Estructuras de Datos en Python</div>
+<h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 29px; font-weight: 600;">Fundamentos de las tablas hash</h2>
+<p style="margin: 0; color: #ffffff; font-size: 17px;">Comprender el funcionamiento de las tablas hash, su organización mediante pares clave-valor, sus diferencias respecto a otras estructuras de datos y sus principales ventajas y limitaciones.</p>
+</div>
+<!-- INTRODUCCIÓN -->
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-left: 6px solid #10B981; padding: 20px 24px; border-radius: 8px; margin-bottom: 30px;">
+<h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 22px;">Introducción</h3>
+<p style="margin: 0 0 12px 0;">En el desarrollo de software, una de las necesidades más frecuentes consiste en almacenar información y recuperarla de manera rápida y eficiente. Los sistemas de gestión de usuarios, inventarios, bibliotecas digitales y plataformas de comercio electrónico requieren estructuras que permitan localizar registros sin necesidad de revisar todos los elementos almacenados.</p>
+<p style="margin: 0 0 12px 0;">Las <strong>tablas hash (Hash Tables)</strong> son estructuras de datos diseñadas para almacenar y recuperar información mediante claves que identifican los elementos. Su funcionamiento se basa en una función denominada <strong>función hash</strong>, que permite determinar la ubicación donde debe almacenarse o buscarse un elemento.</p>
+<p style="margin: 0;">A diferencia de otras estructuras, como las listas, donde una búsqueda puede requerir recorrer varios elementos, las tablas hash permiten realizar operaciones de búsqueda, inserción y eliminación con una complejidad promedio de <strong>O(1)</strong>, bajo condiciones adecuadas.</p>
+</div>
+<!-- 1.1 CONCEPTO Y CARACTERÍSTICAS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">1.1 Concepto y características de una tabla hash</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">Una <strong>tabla hash</strong> es una estructura de datos que almacena información mediante asociaciones entre claves y valores. Utiliza una función hash para transformar una clave en una ubicación dentro de una estructura de almacenamiento.</p>
+</div>
+<p>Su principal objetivo consiste en facilitar el acceso rápido a la información sin depender de búsquedas secuenciales.</p>
+<p>Por ejemplo, en un sistema de gestión académica, cada persona puede identificarse mediante un código único que permite consultar sus datos.</p>
+<div style="overflow-x: auto; margin: 22px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 480px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Clave</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Valor asociado</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>EST001</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Ana Martínez</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>EST002</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Carlos López</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>EST003</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">María Hernández</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>EST004</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">José Ramírez</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 20px;">Representación en Python</h4>
+<p>En Python, los diccionarios permiten representar la relación entre claves y valores.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; overflow: auto; padding: 22px;"><code>estudiantes = {
+    &quot;EST001&quot;: &quot;Ana Martínez&quot;,
+    &quot;EST002&quot;: &quot;Carlos López&quot;,
+    &quot;EST003&quot;: &quot;María Hernández&quot;,
+    &quot;EST004&quot;: &quot;José Ramírez&quot;
+}
+
+print(estudiantes[&quot;EST003&quot;])</code></pre>
+<strong style="color: #047857;">Resultado:</strong>
+<pre style="background: #ECFDF5; color: #065f46; border: 1px solid #A7F3D0; border-radius: 7px; padding: 14px 18px; overflow: auto;"><code>María Hernández</code></pre>
+<p style="margin-bottom: 0;">La clave <code>EST003</code> permite recuperar directamente su valor asociado sin implementar manualmente un recorrido de todos los registros.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin: 24px 0 15px 0;">Características principales</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Almacenamiento asociativo</strong>
+<p style="margin: 8px 0 0 0;">Organiza la información mediante relaciones entre claves y valores.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Acceso eficiente</strong>
+<p style="margin: 8px 0 0 0;">Permite localizar elementos utilizando su clave de identificación.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Claves únicas</strong>
+<p style="margin: 8px 0 0 0;">Cada clave identifica una única entrada dentro de la tabla.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Valores modificables</strong>
+<p style="margin: 8px 0 0 0;">Es posible actualizar la información asociada con una clave existente.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Funciones hash</strong>
+<p style="margin: 8px 0 0 0;">Transforman las claves para determinar posiciones de almacenamiento.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Manejo de colisiones</strong>
+<p style="margin: 8px 0 0 0;">Incorpora mecanismos para gestionar claves que generan una misma posición.</p>
+</div>
+</div>
+</section>
+<!-- 1.2 PARES CLAVE-VALOR -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">1.2 Estructura de almacenamiento mediante pares clave-valor</h3>
+<p>El principio fundamental de una tabla hash consiste en asociar una <strong>clave (key)</strong> con un <strong>valor (value)</strong>. La clave permite identificar un registro, mientras que el valor contiene la información correspondiente.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; margin: 22px 0;">
+<div style="flex: 1 1 230px; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 9px; padding: 20px; text-align: center;"><strong style="color: #1d4ed8; font-size: 19px;">Clave</strong>
+<div style="font-size: 23px; font-weight: bold; margin: 12px 0; color: #1d4ed8;">PROD001</div>
+<p style="margin: 0;">Identificador del producto.</p>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; font-size: 30px; color: #3b82f6; font-weight: bold;">→</div>
+<div style="flex: 1 1 230px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 9px; padding: 20px; text-align: center;"><strong style="color: #047857; font-size: 19px;">Valor</strong>
+<div style="font-size: 23px; font-weight: bold; margin: 12px 0; color: #047857;">Teclado</div>
+<p style="margin: 0;">Información almacenada.</p>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Componentes principales</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 620px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Componente</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Descripción</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Clave</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Identificador utilizado para localizar un elemento.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>PROD001</code></td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Valor</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Información asociada con una clave.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Teclado</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Función hash</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Transforma una clave en un valor hash.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>hash(clave)</code></td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Índice</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Posición calculada dentro de la estructura.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">3</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Tabla</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Estructura que contiene las entradas almacenadas.</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Arreglo de posiciones</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px; margin: 24px 0;">
+<h4 style="color: #1f2937; margin: 0 0 16px 0; font-size: 20px;">Representación conceptual del almacenamiento</h4>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; margin-bottom: 20px;">
+<div style="background: #EFF6FF; border: 1px solid #3B82F6; border-radius: 8px; padding: 13px 20px; text-align: center;"><strong style="color: #1d4ed8;">Clave</strong>
+<div><code>PROD001</code></div>
+</div>
+<span style="font-size: 26px; color: #3b82f6;">→</span>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 13px 20px; text-align: center;"><strong style="color: #92400e;">Función hash</strong>
+<div><code>h(clave)</code></div>
+</div>
+<span style="font-size: 26px; color: #3b82f6;">→</span>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 13px 20px; text-align: center;"><strong style="color: #047857;">Índice</strong>
+<div><code>3</code></div>
+</div>
+</div>
+<div style="max-width: 460px; margin: 0 auto;">
+<div style="display: flex; align-items: center; margin-bottom: 5px; gap: 10px;"><span style="width: 28px; font-weight: bold;">0</span>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 11px; text-align: center;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; margin-bottom: 5px; gap: 10px;"><span style="width: 28px; font-weight: bold;">1</span>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 11px; text-align: center;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; margin-bottom: 5px; gap: 10px;"><span style="width: 28px; font-weight: bold;">2</span>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 11px; text-align: center;">Vacío</div>
+</div>
+<div style="display: flex; align-items: center; margin-bottom: 5px; gap: 10px;"><span style="width: 28px; font-weight: bold; color: #047857;">3</span>
+<div style="flex: 1; background: #D1FAE5; border: 2px solid #10B981; padding: 11px; text-align: center; font-weight: bold; color: #065f46;">PROD001 : Teclado</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; font-weight: bold;">4</span>
+<div style="flex: 1; background: #FFFFFF; border: 1px solid #D1D5DB; padding: 11px; text-align: center;">Vacío</div>
+</div>
+</div>
+<p style="margin: 16px 0 0 0; text-align: center; font-size: 14px; color: #4b5563;">Ejemplo ilustrativo: la función hash asigna la clave a la posición 3.</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Ejemplo en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 20px 0; overflow: auto; padding: 22px;"><code>productos = {
+    &quot;PROD001&quot;: &quot;Teclado&quot;,
+    &quot;PROD002&quot;: &quot;Mouse&quot;,
+    &quot;PROD003&quot;: &quot;Monitor&quot;
+}
+
+print(productos[&quot;PROD001&quot;])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; white-space: pre-wrap;"><code>Teclado</code></pre>
+</div>
+<p style="margin-top: 18px;">Las claves de un diccionario deben ser <strong>hashables</strong>, como las cadenas de texto, los números enteros y las tuplas cuyos elementos también sean hashables. Los valores pueden contener distintos tipos de información.</p>
+</section>
+<!-- 1.3 FUNCIONAMIENTO -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">1.3 Funcionamiento general de una tabla hash</h3>
+<p>El funcionamiento de una tabla hash se desarrolla mediante una serie de operaciones que permiten transformar una clave en una ubicación de almacenamiento.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 22px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;">
+<div style="background: #3B82F6; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-weight: bold; margin-bottom: 10px;">1</div>
+<strong style="color: #1d4ed8;">Recepción de la clave</strong>
+<p style="margin: 8px 0 0 0;">Se proporciona el identificador del elemento.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;">
+<div style="background: #10B981; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-weight: bold; margin-bottom: 10px;">2</div>
+<strong style="color: #047857;">Aplicación de la función hash</strong>
+<p style="margin: 8px 0 0 0;">La clave se procesa para obtener un valor hash.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;">
+<div style="background: #FBBF24; color: #1f2937; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-weight: bold; margin-bottom: 10px;">3</div>
+<strong style="color: #92400e;">Determinación del índice</strong>
+<p style="margin: 8px 0 0 0;">Se calcula una posición válida dentro de la tabla.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;">
+<div style="background: #3B82F6; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-weight: bold; margin-bottom: 10px;">4</div>
+<strong style="color: #1d4ed8;">Acceso a la posición</strong>
+<p style="margin: 8px 0 0 0;">Se localiza la ubicación correspondiente.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;">
+<div style="background: #10B981; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; text-align: center; line-height: 34px; font-weight: bold; margin-bottom: 10px;">5</div>
+<strong style="color: #047857;">Almacenamiento o recuperación</strong>
+<p style="margin: 8px 0 0 0;">Se inserta el elemento o se recupera su valor asociado.</p>
+</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px 24px; margin: 22px 0;">
+<h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 20px;">Ejemplo conceptual: cálculo de índices</h4>
+<p>Supongamos que se dispone de una tabla con diez posiciones y una función hash para claves enteras:</p>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px; text-align: center; margin: 18px 0;"><span style="font-size: 24px; font-weight: bold; color: #1d4ed8;">h(k) = k mod 10</span></div>
+<ul style="padding-left: 24px;">
+<li><strong>h(k):</strong> índice calculado.</li>
+<li><strong>k:</strong> clave numérica.</li>
+<li><strong>mod:</strong> residuo de la división.</li>
+</ul>
+<div style="overflow-x: auto; margin-top: 20px;">
+<table style="width: 100%; border-collapse: collapse; min-width: 450px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 12px; border: 1px solid #2563EB;">Clave</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Operación</th>
+<th style="padding: 12px; border: 1px solid #2563EB;">Índice</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">23</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">23 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">3</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">45</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">45 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">17</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">17 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">7</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">32</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">32 % 10</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Implementación básica en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 20px 0; overflow: auto; padding: 22px;"><code>def funcion_hash(clave, capacidad):
+    return clave % capacidad
+
+print(funcion_hash(23, 10))
+print(funcion_hash(45, 10))
+print(funcion_hash(17, 10))</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>3
+5
+7</code></pre>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px 22px; border-radius: 8px; margin-top: 22px;"><strong style="color: #92400e;">Consideración importante</strong>
+<p style="margin: 8px 0 0 0;">Este ejemplo utiliza una función simplificada con fines educativos. Cuando dos claves generan el mismo índice, se produce una <strong>colisión</strong>, que debe resolverse mediante un mecanismo específico.</p>
+</div>
+</section>
+<!-- 1.4 COMPARACIÓN -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">1.4 Diferencias entre tablas hash, listas y arreglos</h3>
+<p>Las listas, los arreglos y las tablas hash permiten almacenar información, pero presentan diferencias importantes en la manera de organizar y localizar sus elementos.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 22px 0;">
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #3B82F6; border-radius: 8px; padding: 20px;">
+<h4 style="color: #1d4ed8; margin: 0 0 10px 0;">Listas</h4>
+<p>Almacenan elementos en una secuencia y permiten acceder a ellos mediante índices numéricos.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 14px; border-radius: 7px; overflow: auto; font-size: 13px;"><code>nombres = [
+    &quot;Ana&quot;,
+    &quot;Carlos&quot;,
+    &quot;María&quot;
+]
+
+print(nombres[1])</code></pre>
+<strong style="color: #047857;">Resultado: Carlos</strong></div>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #10B981; border-radius: 8px; padding: 20px;">
+<h4 style="color: #047857; margin: 0 0 10px 0;">Arreglos</h4>
+<p>Almacenan elementos en posiciones indexadas; suelen utilizar datos homogéneos.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 14px; border-radius: 7px; overflow: auto; font-size: 13px;"><code>from array import array
+
+numeros = array(
+    &quot;i&quot;, [10, 20, 30, 40]
+)
+
+print(numeros[2])</code></pre>
+<strong style="color: #047857;">Resultado: 30</strong></div>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-top: 5px solid #FBBF24; border-radius: 8px; padding: 20px;">
+<h4 style="color: #92400e; margin: 0 0 10px 0;">Tablas hash</h4>
+<p>Organizan los elementos mediante claves y permiten recuperar valores asociados.</p>
+<pre style="background: #1F2937; color: #ffffff; padding: 14px; border-radius: 7px; overflow: auto; font-size: 13px;"><code>usuarios = {
+    &quot;USR001&quot;: &quot;Ana&quot;,
+    &quot;USR002&quot;: &quot;Carlos&quot;,
+    &quot;USR003&quot;: &quot;María&quot;
+}
+
+print(usuarios[&quot;USR002&quot;])</code></pre>
+<strong style="color: #047857;">Resultado: Carlos</strong></div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Tabla comparativa</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 750px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 12px; border: 1px solid #2563EB; text-align: left;">Característica</th>
+<th style="padding: 12px; border: 1px solid #2563EB; text-align: left;">Listas</th>
+<th style="padding: 12px; border: 1px solid #2563EB; text-align: left;">Arreglos</th>
+<th style="padding: 12px; border: 1px solid #2563EB; text-align: left;">Tablas hash</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Organización</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Secuencial</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Indexada</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Clave-valor</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Acceso principal</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Índice numérico</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Índice numérico</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Clave</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Búsqueda</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">O(n) por valor</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">O(n) por valor</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">O(1) promedio por clave</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Inserción</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende de la posición</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende del tipo y posición</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">O(1) promedio</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Orden</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Conserva el orden</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Conserva el orden</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">No ordena por clave</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><strong>Aplicación</strong></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Colecciones generales</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Datos homogéneos</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Consultas por identificador</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 18px 22px; border-radius: 8px;"><strong style="color: #047857;">Importante en Python</strong>
+<p style="margin: 8px 0 0 0;">Los diccionarios <code>dict</code> conservan el orden de inserción como garantía del lenguaje desde Python 3.7. Sin embargo, esto no significa que sus elementos se encuentren ordenados alfabética o numéricamente por sus claves.</p>
+</div>
+</section>
+<!-- 1.5 VENTAJAS Y LIMITACIONES -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">1.5 Ventajas y limitaciones de las tablas hash</h3>
+<p>Las tablas hash presentan características que las convierten en una alternativa eficiente para diferentes aplicaciones. Sin embargo, también poseen limitaciones que deben considerarse durante el diseño de un programa.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 18px; margin: 24px 0;">
+<div style="flex: 1 1 300px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 9px; padding: 22px;">
+<h4 style="color: #047857; font-size: 21px; margin: 0 0 16px 0;">✓ Ventajas</h4>
+<ul style="margin: 0; padding-left: 22px;">
+<li style="margin-bottom: 12px;"><strong>Acceso rápido:</strong> permite localizar información mediante claves.</li>
+<li style="margin-bottom: 12px;"><strong>Inserción eficiente:</strong> facilita agregar nuevos elementos.</li>
+<li style="margin-bottom: 12px;"><strong>Actualización directa:</strong> modifica valores asociados a claves existentes.</li>
+<li style="margin-bottom: 12px;"><strong>Flexibilidad:</strong> admite diferentes tipos de valores.</li>
+<li><strong>Aplicaciones prácticas:</strong> se utiliza en caché, índices, registros y conteo de frecuencias.</li>
+</ul>
+</div>
+<div style="flex: 1 1 300px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 9px; padding: 22px;">
+<h4 style="color: #92400e; font-size: 21px; margin: 0 0 16px 0;">⚠ Limitaciones</h4>
+<ul style="margin: 0; padding-left: 22px;">
+<li style="margin-bottom: 12px;"><strong>Colisiones:</strong> varias claves pueden generar un mismo índice.</li>
+<li style="margin-bottom: 12px;"><strong>Consumo de memoria:</strong> puede requerir espacio adicional.</li>
+<li style="margin-bottom: 12px;"><strong>Ausencia de ordenamiento:</strong> no ordena automáticamente las claves.</li>
+<li style="margin-bottom: 12px;"><strong>Dependencia del hash:</strong> una distribución deficiente afecta el rendimiento.</li>
+<li><strong>Peor caso:</strong> algunas operaciones pueden alcanzar una complejidad O(n).</li>
+</ul>
+</div>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Comparación general</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Ventajas</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Limitaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Búsqueda rápida por clave</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Posibilidad de colisiones</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Inserción eficiente</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Requiere memoria adicional</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Actualización sencilla</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">No proporciona ordenamiento por clave</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Asociación directa clave-valor</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Depende de una buena distribución hash</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Adecuada para registros identificados</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Puede degradarse su rendimiento</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- EJEMPLO INTEGRADOR -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">Ejemplo introductorio en Python</h3>
+<p>Consideremos un sistema sencillo de inventario que administra productos mediante códigos únicos. Cada código identifica un producto y permite consultar o actualizar su información.</p>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 22px 24px; border-radius: 9px; margin: 22px 0;">
+<h4 style="color: #3b82f6; margin: 0 0 12px 0; font-size: 20px;">Sistema básico de inventario</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code># Crear un inventario
+inventario = {
+    &quot;P001&quot;: {&quot;nombre&quot;: &quot;Teclado&quot;, &quot;cantidad&quot;: 15},
+    &quot;P002&quot;: {&quot;nombre&quot;: &quot;Mouse&quot;, &quot;cantidad&quot;: 30},
+    &quot;P003&quot;: {&quot;nombre&quot;: &quot;Monitor&quot;, &quot;cantidad&quot;: 8}
+}
+
+# Buscar un producto
+producto = inventario[&quot;P002&quot;]
+
+print(&quot;Producto:&quot;, producto[&quot;nombre&quot;])
+print(&quot;Cantidad:&quot;, producto[&quot;cantidad&quot;])
+
+# Agregar un producto
+inventario[&quot;P004&quot;] = {
+    &quot;nombre&quot;: &quot;Impresora&quot;,
+    &quot;cantidad&quot;: 5
+}
+
+# Actualizar un producto
+inventario[&quot;P001&quot;][&quot;cantidad&quot;] = 20
+
+# Mostrar todos los productos
+for codigo, datos in inventario.items():
+    print(codigo, datos[&quot;nombre&quot;], datos[&quot;cantidad&quot;])</code></pre>
+<h4 style="color: #047857; margin: 20px 0 12px 0;">Resultado de la ejecución</h4>
+<pre style="background: #ECFDF5; color: #065f46; border: 1px solid #A7F3D0; padding: 18px 20px; border-radius: 8px; overflow: auto; font-family: Consolas, Monaco, monospace; font-size: 14px;"><code>Producto: Mouse
+Cantidad: 30
+P001 Teclado 20
+P002 Mouse 30
+P003 Monitor 8
+P004 Impresora 5</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin-top: 20px;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px;"><strong style="color: #1d4ed8;">Almacenamiento</strong>
+<p style="margin: 8px 0 0 0;">El diccionario <code>inventario</code> relaciona cada código con los datos de un producto.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 18px; border-radius: 8px;"><strong style="color: #047857;">Búsqueda</strong>
+<p style="margin: 8px 0 0 0;">La clave <code>P002</code> permite recuperar directamente los datos del producto.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px; border-radius: 8px;"><strong style="color: #92400e;">Inserción</strong>
+<p style="margin: 8px 0 0 0;">El código <code>P004</code> incorpora un nuevo producto al inventario.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px;"><strong style="color: #1d4ed8;">Actualización</strong>
+<p style="margin: 8px 0 0 0;">La cantidad del producto <code>P001</code> cambia sin reemplazar todo el inventario.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 18px; border-radius: 8px;"><strong style="color: #047857;">Recorrido</strong>
+<p style="margin: 8px 0 0 0;">El ciclo <code>for</code> y el método <code>items()</code> permiten consultar las entradas registradas.</p>
+</div>
+</div>
+<div style="background: #FFFBEB; border-left: 5px solid #FBBF24; padding: 18px 22px; border-radius: 8px; margin-top: 22px;">
+<p style="margin: 0;"><strong>Aplicación práctica:</strong> este tipo de estructura resulta útil cuando una aplicación debe administrar registros identificados mediante códigos, como productos, usuarios, empleados o solicitudes.</p>
+</div>
+</section>
+<!-- SÍNTESIS -->
+<div style="background: #1F2937; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-top: 30px;">
+<h3 style="margin: 0 0 12px 0; color: #fbbf24; font-size: 22px;">Síntesis</h3>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Las tablas hash son estructuras de datos que permiten almacenar y recuperar información mediante asociaciones entre claves y valores. Su funcionamiento se apoya en funciones hash que determinan las posiciones de almacenamiento.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">En comparación con las listas y los arreglos, ofrecen ventajas importantes cuando se necesita localizar información utilizando identificadores, ya que sus operaciones principales presentan una complejidad promedio de <strong>O(1)</strong>.</p>
+<p style="margin: 0; color: #ffffff;">En Python, los diccionarios <code style="color: #fbbf24;">dict</code> proporcionan una implementación de este concepto y facilitan la creación de aplicaciones que requieren búsquedas rápidas, inserciones y actualizaciones. Estos fundamentos permiten avanzar hacia el estudio de las funciones hash, la distribución de claves y la resolución de colisiones.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div></main><div class="nav-buttons">
+<a href="../index.html" title="Anterior" class="nav-button nav-button-left"><span>Anterior</span></a>
+<a href="../html/2-funciones-hash-y-distribucion-de-claves.html" title="Siguiente" class="nav-button nav-button-right"><span>Siguiente</span></a>
+</div>
+<footer id="siteFooter"><div id="siteFooterContent"> <div id="packageLicense" class="cc cc-by-sa"> <p> <span class="license-label">Licencia: </span><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Reconocimiento - compartir igual 4.0</a></p>
+</div>
+</div></footer>
+</div>
+<p id="made-with-eXe"> <a href="https://exelearning.net/" target="_blank" rel="noopener"> <span>Creado con eXeLearning <span>(Ventana nueva)</span></span></a></p>
+</body>
+</html>

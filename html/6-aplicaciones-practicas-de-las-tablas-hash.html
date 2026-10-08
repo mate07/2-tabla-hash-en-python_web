@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es" id="exe-page-muyqo1gq-1vac6j1vm">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="eXeLearning v4.0.5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="license" type="text/html" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<title>6. Aplicaciones prácticas de las tablas hash | 2. Tabla Hash en Python</title>
+<link rel="icon" type="image/x-icon" href="../libs/favicon.ico">
+<script>document.querySelector("html").classList.add("js");</script><script src="../libs/jquery/jquery.min.js"> </script><script src="../libs/common_i18n.js"> </script><script src="../libs/common.js"> </script><script src="../libs/exe_export.js"> </script><script src="../libs/bootstrap/bootstrap.bundle.min.js"> </script><link rel="stylesheet" href="../libs/bootstrap/bootstrap.min.css">
+<script src="../idevices/text/text.js"></script><link rel="stylesheet" href="../idevices/text/text.css">
+<link rel="stylesheet" href="../content/css/base.css"><script src="../theme/style.js"> </script><link rel="stylesheet" href="../theme/style.css">
+</head>
+<body class="exe-export exe-web-site">
+<script>document.body.className+=" js"</script>
+<div class="exe-content exe-export pre-js siteNav-hidden"><a href="#page-muyqo1gq-1vac6j1vm" id="skipNav">Skip to content</a> <nav id="siteNav">
+<ul>
+<li> <a href="../index.html" class="main-node no-ch">Inicio</a>
+</li>
+<li> <a href="../html/1-fundamentos-de-las-tablas-hash.html" class="no-ch">1. Fundamentos de las tablas hash</a>
+</li>
+<li> <a href="../html/2-funciones-hash-y-distribucion-de-claves.html" class="no-ch">2. Funciones hash y distribución de claves</a>
+</li>
+<li> <a href="../html/3-colisiones-y-metodos-de-resolucion.html" class="no-ch">3. Colisiones y métodos de resolución</a>
+</li>
+<li> <a href="../html/4-operaciones-fundamentales-de-una-tabla-hash.html" class="no-ch">4. Operaciones fundamentales de una tabla hash</a>
+</li>
+<li> <a href="../html/5-implementacion-de-tablas-hash-en-python.html" class="no-ch">5. Implementación de tablas hash en Python</a>
+</li>
+<li class="active"> <a href="../html/6-aplicaciones-practicas-de-las-tablas-hash.html" class="active no-ch">6. Aplicaciones prácticas de las tablas hash</a>
+</li>
+<li> <a href="../html/repaso-tabla-hash-en-python.html" class="no-ch">Repaso: Tabla Hash en Python</a>
+</li>
+</ul>
+</nav><main id="page-muyqo1gq-1vac6j1vm" class="page"> 
+<header class="main-header">
+<div class="package-header"><p class="package-title">2. Tabla Hash en Python</p></div>
+<div class="page-header"><h1 class="page-title">6. Aplicaciones prácticas de las tablas hash</h1></div>
+</header><div id="page-content-page-muyqo1gq-1vac6j1vm" class="page-content">
+<article id="block-muyt0cj9-y5altg3nk" class="box">
+<header class="box-head no-icon">
+<h1 class="box-title">Contenido</h1>
+<button class="box-toggle box-toggle-on" title="Toggle content">
+<span>Toggle content</span>
+</button></header>
+<div class="box-content">
+<div id="idevice-1791419655282-mcakuee65" class="idevice_node text" data-idevice-path="../idevices/text/" data-idevice-type="text" data-idevice-component-type="json" data-idevice-json-data="{&quot;ideviceId&quot;:&quot;idevice-1791419655282-mcakuee65&quot;}">
+<div class="exe-text-template">
+    <div style="font-family: Arial, Helvetica, sans-serif; color: #1f2937; line-height: 1.65; max-width: 1200px; margin: 0 auto;"><!-- ENCABEZADO PRINCIPAL -->
+<div style="background: #3B82F6; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-bottom: 24px;">
+<div style="display: inline-block; background: #FBBF24; color: #1f2937; padding: 5px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 12px;">Estructuras de Datos en Python</div>
+<h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 29px; font-weight: 600;">Aplicaciones prácticas de las tablas hash</h2>
+<p style="margin: 0; color: #ffffff; font-size: 17px;">Aplicar tablas hash en sistemas de registros, búsquedas rápidas, inventarios, mecanismos de caché, conteo de frecuencias y detección de duplicados utilizando Python.</p>
+</div>
+<!-- INTRODUCCIÓN -->
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; border-left: 6px solid #10B981; padding: 20px 24px; border-radius: 8px; margin-bottom: 30px;">
+<h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 22px;">Introducción</h3>
+<p style="margin: 0 0 12px 0;">Las tablas hash se utilizan en numerosos sistemas informáticos que necesitan almacenar, consultar y administrar información de manera eficiente. Su capacidad para relacionar claves únicas con valores permite implementar soluciones que requieren búsquedas rápidas y acceso directo a registros.</p>
+<p style="margin: 0 0 12px 0;">En el desarrollo de software, estas estructuras resultan especialmente útiles para gestionar usuarios, consultar productos, organizar inventarios, almacenar información temporal y procesar grandes conjuntos de datos.</p>
+<p style="margin: 0 0 12px 0;">Python proporciona los diccionarios <code>dict</code> y los conjuntos <code>set</code> como estructuras basadas en mecanismos hash, facilitando su aplicación sin necesidad de implementar manualmente funciones hash o mecanismos de resolución de colisiones.</p>
+<p style="margin: 0;">En este subtema se estudiarán diferentes aplicaciones prácticas mediante ejemplos relacionados con registros, búsquedas, inventarios, almacenamiento temporal, conteo de frecuencias y detección de duplicados.</p>
+</div>
+<!-- 6.1 GESTIÓN DE REGISTROS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.1 Gestión de registros mediante identificadores únicos</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">Una de las aplicaciones más frecuentes de las tablas hash consiste en administrar registros que poseen un <strong>identificador único</strong>, utilizado como clave para recuperar la información correspondiente.</p>
+</div>
+<p>Los sistemas académicos, administrativos, comerciales y de recursos humanos utilizan códigos para identificar personas, productos, solicitudes y transacciones. Estos identificadores permiten recuperar información específica sin recorrer todos los registros.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Ejemplo conceptual</h4>
+<p>Un sistema académico administra estudiantes mediante códigos de identificación.</p>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 640px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Código</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Nombre</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Carrera</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">EST001</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Ana Martínez</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Desarrollo de Software</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">EST002</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Carlos López</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Ciberseguridad</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">EST003</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">María Hernández</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Servicios en la Nube</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">EST004</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">José Ramírez</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Desarrollo de Software</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Cada código funciona como una clave única que permite identificar el registro correspondiente.</p>
+<h4 style="color: #3b82f6; font-size: 20px;">Implementación en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>estudiantes = {
+    &quot;EST001&quot;: {
+        &quot;nombre&quot;: &quot;Ana Martínez&quot;,
+        &quot;carrera&quot;: &quot;Desarrollo de Software&quot;
+    },
+    &quot;EST002&quot;: {
+        &quot;nombre&quot;: &quot;Carlos López&quot;,
+        &quot;carrera&quot;: &quot;Ciberseguridad&quot;
+    },
+    &quot;EST003&quot;: {
+        &quot;nombre&quot;: &quot;María Hernández&quot;,
+        &quot;carrera&quot;: &quot;Servicios en la Nube&quot;
+    }
+}
+
+codigo = &quot;EST002&quot;
+
+estudiante = estudiantes.get(codigo)
+
+if estudiante is not None:
+    print(&quot;Nombre:&quot;, estudiante[&quot;nombre&quot;])
+    print(&quot;Carrera:&quot;, estudiante[&quot;carrera&quot;])
+else:
+    print(&quot;Estudiante no encontrado&quot;)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>Nombre: Carlos López
+Carrera: Ciberseguridad</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 25px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Identificador único</strong>
+<p style="margin: 8px 0 0 0;">Cada código identifica un registro académico.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Información asociada</strong>
+<p style="margin: 8px 0 0 0;">Los valores contienen diccionarios con nombre y carrera.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Consulta eficiente</strong>
+<p style="margin: 8px 0 0 0;">El método <code>get()</code> permite obtener el registro usando su código.</p>
+</div>
+</div>
+<p>La búsqueda por clave presenta una complejidad promedio O(1), lo que resulta útil para administrar grandes cantidades de registros.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Aplicaciones frecuentes</h4>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 20px 24px; border-radius: 9px;">
+<ul style="margin: 0; padding-left: 24px;">
+<li>Sistemas de registro académico.</li>
+<li>Administración de empleados.</li>
+<li>Gestión de usuarios.</li>
+<li>Consulta de expedientes.</li>
+<li>Administración de solicitudes.</li>
+</ul>
+</div>
+</section>
+<!-- 6.2 BÚSQUEDA RÁPIDA -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.2 Implementación de sistemas de búsqueda rápida</h3>
+<p>Las tablas hash permiten desarrollar mecanismos de búsqueda en los que cada elemento se identifica mediante una clave. Esta característica resulta útil cuando las aplicaciones necesitan responder rápidamente a consultas realizadas por usuarios o por otros componentes del sistema.</p>
+<p>Por ejemplo, una biblioteca digital puede utilizar códigos para localizar los títulos y autores de sus libros.</p>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 22px 0;">
+<h4 style="color: #1f2937; margin: 0 0 16px 0; font-size: 20px;">Funcionamiento conceptual</h4>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;">
+<div style="flex: 1 1 180px; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">Código solicitado</strong>
+<p style="margin: 8px 0 0 0; font-size: 19px; font-weight: bold;">LIB002</p>
+</div>
+<span style="font-size: 28px; color: #3b82f6;">→</span>
+<div style="flex: 1 1 180px; background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px; border-radius: 8px; text-align: center;"><strong style="color: #92400e;">Tabla hash</strong>
+<p style="margin: 8px 0 0 0;">Búsqueda por clave</p>
+</div>
+<span style="font-size: 28px; color: #3b82f6;">→</span>
+<div style="flex: 1 1 180px; background: #ECFDF5; border: 1px solid #A7F3D0; padding: 18px; border-radius: 8px; text-align: center;"><strong style="color: #047857;">Registro recuperado</strong>
+<p style="margin: 8px 0 0 0;">Información del libro</p>
+</div>
+</div>
+<p style="text-align: center; font-size: 14px; color: #4b5563; margin: 16px 0 0 0;">La clave permite localizar la información asociada sin implementar un recorrido secuencial de los códigos.</p>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Ejemplo en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>biblioteca = {
+    &quot;LIB001&quot;: {
+        &quot;titulo&quot;: &quot;Introducción a Python&quot;,
+        &quot;autor&quot;: &quot;Autor A&quot;
+    },
+    &quot;LIB002&quot;: {
+        &quot;titulo&quot;: &quot;Estructuras de Datos&quot;,
+        &quot;autor&quot;: &quot;Autor B&quot;
+    },
+    &quot;LIB003&quot;: {
+        &quot;titulo&quot;: &quot;Algoritmos&quot;,
+        &quot;autor&quot;: &quot;Autor C&quot;
+    }
+}
+
+
+def buscar_libro(codigo):
+    return biblioteca.get(codigo)
+
+
+resultado = buscar_libro(&quot;LIB002&quot;)
+
+if resultado is not None:
+    print(&quot;Título:&quot;, resultado[&quot;titulo&quot;])
+    print(&quot;Autor:&quot;, resultado[&quot;autor&quot;])
+else:
+    print(&quot;Libro no encontrado&quot;)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>Título: Estructuras de Datos
+Autor: Autor B</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 25px;">Análisis del ejemplo</h4>
+<p>La función <code>buscar_libro()</code> recibe un código e intenta localizarlo en el diccionario. Si la clave existe, devuelve el registro asociado. En caso contrario, retorna <code>None</code>.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Aplicaciones de búsqueda rápida</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 650px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Sistema</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Clave utilizada</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Información recuperada</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Biblioteca</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Código del libro</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Título y autor</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Inventario</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Código del producto</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Precio y cantidad</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Sistema académico</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Código del estudiante</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Datos académicos</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Gestión de usuarios</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Identificador</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Información del usuario</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Sistema de solicitudes</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Número de solicitud</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Estado y descripción</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 6.3 INVENTARIOS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.3 Control de inventarios y catálogos de productos</h3>
+<p>Los sistemas de inventario necesitan administrar información relacionada con productos, cantidades, precios y disponibilidad.</p>
+<p>Las tablas hash permiten organizar estos datos mediante códigos únicos y ejecutar operaciones de consulta y actualización.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Ejemplo conceptual</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Código</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Producto</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: center;">Cantidad</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: right;">Precio</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">P001</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Teclado</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">15</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: right;">$25.00</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">P002</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Mouse</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">30</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: right;">$12.00</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">P003</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Monitor</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">8</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: right;">$180.00</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">P004</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Impresora</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center;">5</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: right;">$120.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Implementación en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>inventario = {
+    &quot;P001&quot;: {
+        &quot;nombre&quot;: &quot;Teclado&quot;,
+        &quot;cantidad&quot;: 15,
+        &quot;precio&quot;: 25.00
+    },
+    &quot;P002&quot;: {
+        &quot;nombre&quot;: &quot;Mouse&quot;,
+        &quot;cantidad&quot;: 30,
+        &quot;precio&quot;: 12.00
+    },
+    &quot;P003&quot;: {
+        &quot;nombre&quot;: &quot;Monitor&quot;,
+        &quot;cantidad&quot;: 8,
+        &quot;precio&quot;: 180.00
+    }
+}
+
+
+def consultar_producto(codigo):
+    return inventario.get(codigo)
+
+
+def actualizar_stock(codigo, cantidad):
+    if codigo not in inventario:
+        return False
+
+    if cantidad &lt; 0:
+        return False
+
+    inventario[codigo][&quot;cantidad&quot;] = cantidad
+    return True
+
+
+def registrar_producto(codigo, nombre, cantidad, precio):
+    if codigo in inventario:
+        return False
+
+    if cantidad &lt; 0 or precio &lt; 0:
+        return False
+
+    inventario[codigo] = {
+        &quot;nombre&quot;: nombre,
+        &quot;cantidad&quot;: cantidad,
+        &quot;precio&quot;: precio
+    }
+
+    return True
+
+
+# Consultar producto
+producto = consultar_producto(&quot;P002&quot;)
+print(&quot;Producto:&quot;, producto[&quot;nombre&quot;])
+
+# Actualizar existencias
+actualizar_stock(&quot;P002&quot;, 25)
+
+# Registrar producto
+registrar_producto(
+    &quot;P004&quot;, &quot;Impresora&quot;, 5, 120.00
+)
+
+# Mostrar inventario
+for codigo, datos in inventario.items():
+    print(codigo, datos[&quot;nombre&quot;], datos[&quot;cantidad&quot;])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>Producto: Mouse
+P001 Teclado 15
+P002 Mouse 25
+P003 Monitor 8
+P004 Impresora 5</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 26px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Almacenamiento</strong>
+<p style="margin: 8px 0 0 0;">Los códigos identifican diccionarios que contienen los datos de cada producto.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Consulta</strong>
+<p style="margin: 8px 0 0 0;"><code>consultar_producto()</code> recupera registros mediante su código.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Actualización</strong>
+<p style="margin: 8px 0 0 0;"><code>actualizar_stock()</code> modifica cantidades y rechaza valores negativos.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Registro</strong>
+<p style="margin: 8px 0 0 0;"><code>registrar_producto()</code> incorpora productos nuevos, evitando códigos duplicados.</p>
+</div>
+</div>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 18px 22px; border-radius: 8px;">
+<p style="margin: 0;">Las consultas individuales por código presentan complejidad promedio <strong>O(1)</strong>. Mostrar todos los productos requiere recorrer la estructura y presenta complejidad <strong>O(n)</strong>.</p>
+</div>
+</section>
+<!-- 6.4 CACHÉ -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.4 Almacenamiento temporal y sistemas de caché</h3>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin-bottom: 22px;">
+<p style="margin: 0; font-size: 18px;">Una <strong>caché (cache)</strong> es un mecanismo que conserva temporalmente información para evitar repetir operaciones costosas, como consultas a bases de datos, cálculos complejos o solicitudes a servicios externos.</p>
+</div>
+<p>Las tablas hash resultan apropiadas para implementar cachés porque permiten localizar rápidamente resultados almacenados mediante claves.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Funcionamiento de una caché</h4>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 9px; padding: 22px 24px; margin: 20px 0;">
+<ol style="margin: 0; padding-left: 24px;">
+<li style="margin-bottom: 9px;">Se recibe una solicitud de información.</li>
+<li style="margin-bottom: 9px;">Se consulta si el resultado existe en la caché.</li>
+<li style="margin-bottom: 9px;">Si existe, se devuelve directamente.</li>
+<li style="margin-bottom: 9px;">Si no existe, se obtiene o calcula la información.</li>
+<li>El resultado se almacena para futuras consultas.</li>
+</ol>
+</div>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 20px 0;">
+<h4 style="color: #1f2937; margin: 0 0 15px 0;">Representación conceptual</h4>
+<div style="max-width: 650px; margin: 0 auto;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 16px; border-radius: 8px; text-align: center; font-weight: bold; color: #1d4ed8;">Solicitud de información</div>
+<div style="font-size: 26px; color: #3b82f6; text-align: center;">↓</div>
+<div style="background: #FFFBEB; border: 2px solid #FBBF24; border-radius: 8px; padding: 16px; text-align: center; color: #92400e; font-weight: bold;">¿El resultado existe en caché?</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;">
+<div style="flex: 1 1 220px; background: #ECFDF5; border: 1px solid #A7F3D0; padding: 18px; border-radius: 8px; text-align: center;"><strong style="color: #047857;">Sí</strong>
+<div style="font-size: 24px; color: #10b981;">↓</div>
+<p style="margin: 0;">Recuperar resultado almacenado.</p>
+</div>
+<div style="flex: 1 1 220px; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 18px; border-radius: 8px; text-align: center;"><strong style="color: #1d4ed8;">No</strong>
+<div style="font-size: 24px; color: #3b82f6;">↓</div>
+<p style="margin: 0;">Calcular resultado y almacenarlo.</p>
+</div>
+</div>
+<div style="font-size: 26px; color: #3b82f6; text-align: center;">↓</div>
+<div style="background: #1F2937; color: #ffffff; padding: 15px; text-align: center; border-radius: 8px; font-weight: bold;">Entregar resultado solicitado</div>
+</div>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Ejemplo de caché en Python</h4>
+<p>El siguiente programa almacena temporalmente resultados de cálculos.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>cache = {}
+
+
+def calcular_cuadrado(numero):
+    if numero in cache:
+        print(&quot;Resultado obtenido de caché&quot;)
+        return cache[numero]
+
+    print(&quot;Calculando resultado...&quot;)
+
+    resultado = numero ** 2
+    cache[numero] = resultado
+
+    return resultado
+
+
+print(calcular_cuadrado(8))
+print(calcular_cuadrado(8))
+print(calcular_cuadrado(5))</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>Calculando resultado...
+64
+Resultado obtenido de caché
+64
+Calculando resultado...
+25</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 25px;">Análisis del ejemplo</h4>
+<p>La primera vez que se solicita el cuadrado de 8, el programa realiza el cálculo y almacena el resultado en el diccionario <code>cache</code>.</p>
+<p>Cuando se solicita nuevamente el mismo número, la función encuentra el resultado almacenado y evita repetir el cálculo. Este procedimiento se conoce como <strong>memoización (memoization)</strong>.</p>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px 22px; border-radius: 8px; margin: 20px 0;"><strong style="color: #92400e;">Consideración importante</strong>
+<p style="margin: 8px 0 0 0;">En sistemas reales, una caché también necesita considerar la capacidad máxima, el tiempo de expiración de los registros y la actualización de información obsoleta.</p>
+</div>
+<h4 style="color: #1f2937; font-size: 20px;">Aplicaciones frecuentes de caché</h4>
+<div style="background: #FFFFFF; border: 1px solid #E5E7EB; padding: 20px 24px; border-radius: 9px;">
+<ul style="margin: 0; padding-left: 24px;">
+<li>Almacenamiento temporal de consultas.</li>
+<li>Reutilización de resultados de cálculos.</li>
+<li>Optimización de aplicaciones web.</li>
+<li>Reducción de solicitudes repetidas.</li>
+<li>Consulta rápida de configuraciones.</li>
+<li>Almacenamiento de resultados intermedios.</li>
+</ul>
+</div>
+</section>
+<!-- 6.5 FRECUENCIAS Y DUPLICADOS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.5 Conteo de frecuencias y detección de duplicados</h3>
+<p>Las tablas hash pueden utilizarse para analizar conjuntos de datos, identificar elementos repetidos y calcular la frecuencia con la que aparece cada valor.</p>
+<p>Estas operaciones resultan útiles en análisis de texto, procesamiento de registros, estadísticas y validación de información.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Conteo de frecuencias</h4>
+<div style="background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 18px 22px; border-radius: 8px; margin: 20px 0;">
+<p style="margin: 0;">El <strong>conteo de frecuencias</strong> consiste en determinar cuántas veces aparece cada elemento dentro de una colección.</p>
+</div>
+<p>Por ejemplo, se desea analizar una lista que contiene nombres de lenguajes de programación.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>lenguajes = [
+    &quot;Python&quot;,
+    &quot;Java&quot;,
+    &quot;Python&quot;,
+    &quot;JavaScript&quot;,
+    &quot;Python&quot;,
+    &quot;Java&quot;,
+    &quot;C++&quot;
+]
+
+frecuencias = {}
+
+for lenguaje in lenguajes:
+    frecuencias[lenguaje] = (
+        frecuencias.get(lenguaje, 0) + 1
+    )
+
+for lenguaje, cantidad in frecuencias.items():
+    print(lenguaje, cantidad)</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>Python 3
+Java 2
+JavaScript 1
+C++ 1</code></pre>
+</div>
+<p style="margin-top: 18px;">El diccionario utiliza cada lenguaje como clave y almacena su cantidad de apariciones como valor.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Representación del conteo</h4>
+<div style="background: #F9F9FB; border: 1px solid #E5E7EB; padding: 22px; border-radius: 9px; margin: 20px 0;">
+<div style="margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;"><strong>Python</strong><span>3</span></div>
+<div style="background: #E5E7EB; border-radius: 20px; overflow: hidden; height: 18px;">
+<div style="background: #3B82F6; height: 18px; width: 100%;"><br /></div>
+</div>
+</div>
+<div style="margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;"><strong>Java</strong><span>2</span></div>
+<div style="background: #E5E7EB; border-radius: 20px; overflow: hidden; height: 18px;">
+<div style="background: #10B981; height: 18px; width: 66.67%;"><br /></div>
+</div>
+</div>
+<div style="margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;"><strong>JavaScript</strong><span>1</span></div>
+<div style="background: #E5E7EB; border-radius: 20px; overflow: hidden; height: 18px;">
+<div style="background: #FBBF24; height: 18px; width: 33.33%;"><br /></div>
+</div>
+</div>
+<div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;"><strong>C++</strong><span>1</span></div>
+<div style="background: #E5E7EB; border-radius: 20px; overflow: hidden; height: 18px;">
+<div style="background: #3B82F6; height: 18px; width: 33.33%;"><br /></div>
+</div>
+</div>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Uso de collections.Counter</h4>
+<p>Python proporciona la clase <code>Counter</code>, perteneciente al módulo <code>collections</code>, que simplifica el conteo de elementos.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>from collections import Counter
+
+lenguajes = [
+    &quot;Python&quot;,
+    &quot;Java&quot;,
+    &quot;Python&quot;,
+    &quot;JavaScript&quot;,
+    &quot;Python&quot;,
+    &quot;Java&quot;,
+    &quot;C++&quot;
+]
+
+frecuencias = Counter(lenguajes)
+
+print(frecuencias[&quot;Python&quot;])
+print(frecuencias[&quot;Java&quot;])</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>3
+2</code></pre>
+</div>
+<p style="margin-top: 18px;"><code>Counter</code> es una subclase especializada de <code>dict</code> que permite contar objetos hashables.</p>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 27px;">Detección de duplicados mediante conjuntos</h4>
+<div style="background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 18px 22px; border-radius: 8px; margin: 20px 0;">
+<p style="margin: 0;">Un <strong>conjunto (<code>set</code>)</strong> almacena elementos únicos y utiliza mecanismos hash para realizar verificaciones de pertenencia de manera eficiente.</p>
+</div>
+<p>Esto permite identificar códigos repetidos sin implementar comparaciones entre todos los registros.</p>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>codigos = [
+    &quot;P001&quot;,
+    &quot;P002&quot;,
+    &quot;P003&quot;,
+    &quot;P002&quot;,
+    &quot;P004&quot;,
+    &quot;P001&quot;
+]
+
+vistos = set()
+duplicados = set()
+
+for codigo in codigos:
+    if codigo in vistos:
+        duplicados.add(codigo)
+    else:
+        vistos.add(codigo)
+
+print(sorted(duplicados))</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0;"><code>[&#039;P001&#039;, &#039;P002&#039;]</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 25px;">Análisis del ejemplo</h4>
+<p>El conjunto <code>vistos</code> almacena los códigos procesados. Cuando se encuentra un código que ya existe, se incorpora al conjunto <code>duplicados</code>.</p>
+<p>Como los conjuntos almacenan elementos únicos, cada código duplicado aparece una sola vez. La función <code>sorted()</code> presenta el resultado en orden alfabético.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Comparación de aplicaciones</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 650px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Aplicación</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Estructura</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Conteo de frecuencias</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>dict</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Registrar cantidad de apariciones.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Conteo automatizado</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>Counter</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Simplificar el cálculo de frecuencias.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Detección de duplicados</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>set</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Identificar elementos repetidos.</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Validación de identificadores</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>set</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Verificar pertenencia.</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Agrupación por categorías</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;"><code>dict</code></td>
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Asociar categorías con colecciones.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 6.6 RESOLUCIÓN DE PROBLEMAS -->
+<section style="margin-bottom: 34px;">
+<h3 style="color: #1f2937; font-size: 24px; border-bottom: 3px solid #3B82F6; padding-bottom: 9px; margin-bottom: 20px;">6.6 Resolución de problemas utilizando tablas hash en Python</h3>
+<p>Las tablas hash pueden combinarse con algoritmos y estructuras de control para resolver problemas que requieren procesamiento eficiente de información.</p>
+<p>Como ejemplo integrador, se desarrollará un sistema que permite registrar productos, consultar existencias, actualizar cantidades y detectar códigos duplicados.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Planteamiento del problema</h4>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 6px solid #3B82F6; padding: 22px 26px; border-radius: 9px; margin: 20px 0;">
+<p style="margin: 0 0 12px 0;">Una tienda necesita administrar un conjunto de productos mediante códigos únicos. El sistema debe permitir:</p>
+<ol style="margin: 0; padding-left: 24px;">
+<li>Registrar productos mediante código, nombre y cantidad.</li>
+<li>Evitar códigos duplicados.</li>
+<li>Consultar productos utilizando su código.</li>
+<li>Actualizar las existencias.</li>
+<li>Eliminar productos.</li>
+<li>Mostrar el inventario completo.</li>
+</ol>
+</div>
+<h4 style="color: #3b82f6; font-size: 20px;">Implementación completa en Python</h4>
+<pre style="background: #1F2937; color: #f9fafb; font-family: Consolas, Monaco, monospace; border-radius: 9px; font-size: 14px; margin: 18px 0; overflow: auto; padding: 22px;"><code>class Inventario:
+    def __init__(self):
+        self.productos = {}
+
+    def registrar(self, codigo, nombre, cantidad):
+        if codigo in self.productos:
+            return False
+
+        if cantidad &lt; 0:
+            return False
+
+        self.productos[codigo] = {
+            &quot;nombre&quot;: nombre,
+            &quot;cantidad&quot;: cantidad
+        }
+
+        return True
+
+    def consultar(self, codigo):
+        return self.productos.get(codigo)
+
+    def actualizar(self, codigo, cantidad):
+        if codigo not in self.productos:
+            return False
+
+        if cantidad &lt; 0:
+            return False
+
+        self.productos[codigo][&quot;cantidad&quot;] = cantidad
+
+        return True
+
+    def eliminar(self, codigo):
+        if codigo not in self.productos:
+            return False
+
+        del self.productos[codigo]
+        return True
+
+    def mostrar(self):
+        for codigo, datos in self.productos.items():
+            print(
+                codigo,
+                datos[&quot;nombre&quot;],
+                datos[&quot;cantidad&quot;]
+            )
+
+
+# Crear inventario
+inventario = Inventario()
+
+# Registrar productos
+inventario.registrar(&quot;P001&quot;, &quot;Teclado&quot;, 15)
+inventario.registrar(&quot;P002&quot;, &quot;Mouse&quot;, 30)
+inventario.registrar(&quot;P003&quot;, &quot;Monitor&quot;, 8)
+
+# Intentar registrar un código duplicado
+duplicado = inventario.registrar(
+    &quot;P002&quot;, &quot;Mouse inalámbrico&quot;, 10
+)
+
+print(&quot;Registro duplicado:&quot;, duplicado)
+
+# Consultar producto
+producto = inventario.consultar(&quot;P001&quot;)
+print(&quot;Consulta:&quot;, producto)
+
+# Actualizar existencias
+inventario.actualizar(&quot;P002&quot;, 25)
+
+# Eliminar producto
+inventario.eliminar(&quot;P003&quot;)
+
+# Mostrar inventario final
+print(&quot;\nInventario final:&quot;)
+inventario.mostrar()</code></pre>
+<div style="background: #ECFDF5; border-left: 5px solid #10B981; padding: 16px 20px; border-radius: 7px;"><strong style="color: #047857;">Resultado:</strong>
+<pre style="margin: 8px 0 0 0; overflow: auto;"><code>Registro duplicado: False
+Consulta: {&#039;nombre&#039;: &#039;Teclado&#039;, &#039;cantidad&#039;: 15}
+
+Inventario final:
+P001 Teclado 15
+P002 Mouse 25</code></pre>
+</div>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 26px;">Análisis del ejemplo</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Clase Inventario</strong>
+<p style="margin: 8px 0 0 0;">Representa el sistema encargado de administrar los productos.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Método registrar()</strong>
+<p style="margin: 8px 0 0 0;">Agrega productos y evita códigos duplicados o cantidades negativas.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Método consultar()</strong>
+<p style="margin: 8px 0 0 0;">Recupera los datos de un producto utilizando su identificador.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Método actualizar()</strong>
+<p style="margin: 8px 0 0 0;">Modifica las existencias de un producto previamente registrado.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Método eliminar()</strong>
+<p style="margin: 8px 0 0 0;">Retira productos mediante su código.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Método mostrar()</strong>
+<p style="margin: 8px 0 0 0;">Recorre los registros y presenta la información del inventario.</p>
+</div>
+</div>
+<p>El sistema utiliza diccionarios para organizar las relaciones entre códigos y productos, aprovechando los mecanismos hash integrados en Python.</p>
+<h4 style="color: #1f2937; font-size: 20px;">Eficiencia de las operaciones</h4>
+<div style="overflow-x: auto; margin: 20px 0;">
+<table style="width: 100%; border-collapse: collapse; min-width: 520px;">
+<thead>
+<tr style="background: #3B82F6; color: #ffffff;">
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: left;">Operación</th>
+<th style="padding: 13px; border: 1px solid #2563EB; text-align: center;">Complejidad promedio</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Registrar producto</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Consultar producto</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Actualizar existencias</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+</tr>
+<tr style="background: #F9F9FB;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Eliminar producto</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; color: #047857; font-weight: bold;">O(1)</td>
+</tr>
+<tr style="background: #FFFFFF;">
+<td style="padding: 12px; border: 1px solid #D1D5DB;">Mostrar inventario completo</td>
+<td style="padding: 12px; border: 1px solid #D1D5DB; text-align: center; font-weight: bold;">O(n)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>La complejidad O(1) corresponde al caso promedio de las operaciones basadas en claves hashables de tamaño acotado. La visualización completa requiere recorrer todos los registros, por lo que su complejidad es O(n).</p>
+<h4 style="color: #1f2937; font-size: 20px; margin-top: 26px;">Otras aplicaciones de las tablas hash</h4>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; margin: 20px 0;">
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Sistemas de autenticación</strong>
+<p style="margin: 8px 0 0 0;">Consultas de usuarios mediante identificadores.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Bases de datos</strong>
+<p style="margin: 8px 0 0 0;">Estructuras de indexación hash para determinados tipos de consultas.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Compiladores</strong>
+<p style="margin: 8px 0 0 0;">Administración de tablas de símbolos, variables e identificadores.</p>
+</div>
+<div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px;"><strong style="color: #1d4ed8;">Aplicaciones web</strong>
+<p style="margin: 8px 0 0 0;">Almacenamiento temporal de información mediante cachés.</p>
+</div>
+<div style="background: #ECFDF5; border: 1px solid #A7F3D0; padding: 20px; border-radius: 8px;"><strong style="color: #047857;">Análisis de datos</strong>
+<p style="margin: 8px 0 0 0;">Conteo de frecuencias, agrupación y detección de duplicados.</p>
+</div>
+<div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 20px; border-radius: 8px;"><strong style="color: #92400e;">Procesamiento de eventos</strong>
+<p style="margin: 8px 0 0 0;">Identificación y seguimiento de eventos mediante claves.</p>
+</div>
+</div>
+</section>
+<!-- SÍNTESIS -->
+<div style="background: #1F2937; color: #ffffff; padding: 26px 30px; border-radius: 10px; margin-top: 30px;">
+<h3 style="margin: 0 0 12px 0; color: #fbbf24; font-size: 22px;">Síntesis</h3>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Las tablas hash constituyen una herramienta fundamental para desarrollar aplicaciones que requieren almacenamiento y recuperación eficiente de información.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">Su aplicación en sistemas de registros, mecanismos de búsqueda, inventarios y sistemas de caché demuestra su utilidad para resolver problemas informáticos mediante identificadores únicos.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">En Python, los diccionarios <code style="color: #fbbf24;">dict</code> facilitan la administración de pares clave-valor, mientras que los conjuntos <code style="color: #fbbf24;">set</code> permiten verificar pertenencia y detectar duplicados eficientemente. La clase <code style="color: #fbbf24;">Counter</code> simplifica las operaciones de conteo de frecuencias.</p>
+<p style="margin: 0 0 12px 0; color: #ffffff;">La combinación de estas estructuras con funciones, clases y algoritmos permite desarrollar soluciones organizadas, reutilizables y fáciles de mantener.</p>
+<p style="margin: 0; color: #ffffff;">La selección de una tabla hash debe considerar las características de las claves, la frecuencia de las operaciones, el consumo de memoria y la necesidad de mantener los datos ordenados. Comprender sus aplicaciones prácticas permite reconocer cuándo utilizar estas estructuras y cómo aprovechar sus ventajas para desarrollar programas eficientes en Python.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div></main><div class="nav-buttons">
+<a href="../html/5-implementacion-de-tablas-hash-en-python.html" title="Anterior" class="nav-button nav-button-left"><span>Anterior</span></a>
+<a href="../html/repaso-tabla-hash-en-python.html" title="Siguiente" class="nav-button nav-button-right"><span>Siguiente</span></a>
+</div>
+<footer id="siteFooter"><div id="siteFooterContent"> <div id="packageLicense" class="cc cc-by-sa"> <p> <span class="license-label">Licencia: </span><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="license">Creative Commons: Reconocimiento - compartir igual 4.0</a></p>
+</div>
+</div></footer>
+</div>
+<p id="made-with-eXe"> <a href="https://exelearning.net/" target="_blank" rel="noopener"> <span>Creado con eXeLearning <span>(Ventana nueva)</span></span></a></p>
+</body>
+</html>
